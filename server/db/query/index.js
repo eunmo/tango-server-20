@@ -26,9 +26,24 @@ const getLangSummary = async () => {
 
 const getSummary = async () => {
   return query(`
-    SELECT SUBSTR(level, 1, 1) as lang, streak, lastCorrect
+    SELECT SUBSTR(level, 1, 1) as lang, streak,
+           DATE_FORMAT(lastCorrect, '%Y-%m-%dT%H:00:00.000Z') as hour,
+           count(*) as count
       FROM words
-     WHERE streak < 11`);
+     WHERE streak < 11
+  GROUP BY lang, streak, hour
+  ORDER BY lang, streak, hour`);
+};
+
+const getMatch = async (patterns) => {
+  const filters = [];
+  patterns.forEach((pattern) => {
+    ['word', 'yomigana', 'meaning'].forEach((column) => {
+      filters.push(`${column} LIKE '%${pattern}%'`);
+    });
+  });
+
+  return query(`SELECT * FROM words WHERE ${filters.join(' OR ')}`);
 };
 
 module.exports = {
@@ -37,4 +52,5 @@ module.exports = {
   getLearningInLevel,
   getLangSummary,
   getSummary,
+  getMatch,
 };

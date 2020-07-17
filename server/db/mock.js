@@ -2,18 +2,20 @@ const { dml, cleanup: dbCleanup } = require('@eunmo/mysql');
 const { add, sync } = require('./dml');
 
 const lastCorrect = '2020-07-12T22:15:12.000Z';
+const lastCorrect2 = '2020-07-12T22:45:12.000Z';
 
 const prepare = async () => {
   await dml('DROP TABLE IF EXISTS words;');
   await dml('CREATE TABLE words LIKE tango.words;');
+  await add(`N0`, 'j', 'k', 'l');
   for (let i = 1; i < 4; i += 1) {
-    for (let j = 0; j < 4; j += 1) {
-      await add(`E200${i}`, 'a', 'a', 'a'); // eslint-disable-line no-await-in-loop
-      await add(`F200${i}`, 'b', 'b', 'b'); // eslint-disable-line no-await-in-loop
-      await add(`J200${i}`, 'c', 'c', 'c'); // eslint-disable-line no-await-in-loop
+    for (let j = 0; j < 5; j += 1) {
+      await add(`E200${i}`, 'a', 'b', 'c'); // eslint-disable-line no-await-in-loop
+      await add(`F200${i}`, 'd', 'e', 'f'); // eslint-disable-line no-await-in-loop
+      await add(`J200${i}`, 'g', 'h', 'i'); // eslint-disable-line no-await-in-loop
     }
   }
-  let words = [];
+  let words = [{ level: `N0`, index: 1, streak: 11, lastCorrect }];
   'EFJ'.split('').forEach((lang) => {
     words = words.concat([
       { level: `${lang}2001`, index: 1, streak: 11, lastCorrect },
@@ -27,6 +29,7 @@ const prepare = async () => {
       { level: `${lang}2003`, index: 1, streak: 3, lastCorrect },
       { level: `${lang}2003`, index: 2, streak: 2, lastCorrect },
       { level: `${lang}2003`, index: 3, streak: 1, lastCorrect },
+      { level: `${lang}2003`, index: 4, streak: 1, lastCorrect: lastCorrect2 },
     ]);
   });
   await sync(words);
