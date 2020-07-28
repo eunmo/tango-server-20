@@ -3,10 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import { Clear, Search } from '@material-ui/icons';
 
 import Words from './words';
-import get from './utils';
+import { get, sortWordsByPattern } from './utils';
 
 const useStyles = makeStyles({
   root: {
@@ -21,21 +22,31 @@ const useStyles = makeStyles({
   iconButton: {
     padding: 10,
   },
+  header: {
+    margin: '0 0 16px 16px',
+  },
 });
 
 export default () => {
   const [keyword, setKeyword] = useState('');
   const [words, setWords] = useState([]);
+  const [patterns, setPatterns] = useState(null);
   const classes = useStyles();
 
   const submit = (e) => {
     e.preventDefault();
-    get(`/api/search/${keyword}`, setWords);
+    if (keyword !== '') {
+      get(`/api/search/${keyword}`, ({ patterns: ps, words: ws }) => {
+        setWords(sortWordsByPattern(ps, ws));
+        setPatterns(ps);
+      });
+    }
   };
 
   const clear = () => {
     setKeyword('');
     setWords([]);
+    setPatterns(null);
   };
 
   return (
@@ -62,12 +73,17 @@ export default () => {
         />
         <IconButton
           className={classes.iconButton}
-          aria-label="directions"
+          aria-label="clear search"
           onClick={clear}
         >
           <Clear />
         </IconButton>
       </Paper>
+      {patterns && (
+        <Typography variant="h6" className={classes.header}>
+          Search Result for: {patterns.join(', ')}
+        </Typography>
+      )}
       {words.length > 0 && <Words words={words} />}
     </>
   );

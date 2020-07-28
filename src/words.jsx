@@ -48,7 +48,7 @@ const XsDown = ({ words }) => (
     <TableBody>
       {words.map(({ level, index, streak, word, yomigana, meaning }) => (
         <TableRow key={level + index}>
-          <TableCell>{chip(level, streak)}</TableCell>
+          <TableCell aria-label="level">{chip(level, streak)}</TableCell>
           <TableCell>{index}</TableCell>
           <TableCell>{streak}</TableCell>
           <TableCell>{word}</TableCell>
