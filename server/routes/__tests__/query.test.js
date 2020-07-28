@@ -80,16 +80,19 @@ test('get meta', async () => {
 });
 
 test.each([
-  ['a', 15],
-  ['a[b', 15],
-  ['x[b', 15],
-  ['x（b', 15],
-  ['a[b]', 15],
-  ['x[b]', 15],
-  ['x（b）', 15],
-  ['x·b', 15],
-  ['a·d', 30],
-])('search %s', async (pattern, count) => {
+  ['a', 1, 15],
+  ['a[b', 2, 15],
+  ['x[b', 2, 15],
+  ['x（b', 2, 15],
+  ['a[b]', 2, 15],
+  ['x[b]', 2, 15],
+  ['x（b）', 2, 15],
+  ['x·b', 2, 15],
+  ['a·d', 2, 30],
+  ['a[m', 1, 15],
+  ['m', 0, 0],
+])('search %s', async (pattern, patternCount, wordCount) => {
   const body = await get(encodeURI(`/api/search/${pattern}`));
-  expect(body.length).toBe(count);
+  expect(body.patterns.length).toBe(patternCount);
+  expect(body.words.length).toBe(wordCount);
 });
