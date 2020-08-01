@@ -46,6 +46,15 @@ const getMatch = async (patterns) => {
   return query(`SELECT * FROM words WHERE ${filters.join(' OR ')}`);
 };
 
+const getWord = async (level, index) => {
+  const rows = await query(`
+    SELECT word, meaning, yomigana
+      FROM words
+     WHERE level='${level}'
+       AND \`index\`=${index}`);
+  return rows[0] ?? {};
+};
+
 module.exports = {
   getNew,
   getLearning,
@@ -53,4 +62,5 @@ module.exports = {
   getLangSummary,
   getSummary,
   getMatch,
+  getWord,
 };

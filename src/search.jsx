@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
@@ -28,19 +29,31 @@ const useStyles = makeStyles({
 });
 
 export default () => {
+  const { keyword: defaultKeyword } = useParams();
   const [keyword, setKeyword] = useState('');
   const [words, setWords] = useState([]);
   const [patterns, setPatterns] = useState(null);
   const classes = useStyles();
 
-  const submit = (e) => {
-    e.preventDefault();
-    if (keyword !== '') {
-      get(`/api/search/${keyword}`, ({ patterns: ps, words: ws }) => {
+  const search = (query) => {
+    if (query !== '') {
+      get(`/api/search/${query}`, ({ patterns: ps, words: ws }) => {
         setWords(sortWordsByPattern(ps, ws));
         setPatterns(ps);
       });
     }
+  };
+
+  useEffect(() => {
+    if (defaultKeyword) {
+      setKeyword(defaultKeyword);
+      search(defaultKeyword);
+    }
+  }, [defaultKeyword]);
+
+  const submit = (e) => {
+    e.preventDefault();
+    search(keyword);
   };
 
   const clear = () => {

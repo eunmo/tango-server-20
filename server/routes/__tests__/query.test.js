@@ -35,6 +35,16 @@ test.each([
   expect(body.length).toBe(count);
 });
 
+test.each([
+  ['E2001', 1, { word: 'a', yomigana: 'b', meaning: 'c' }],
+  ['F2001', 1, { word: 'd', yomigana: 'e', meaning: 'f' }],
+  ['J2001', 1, { word: 'g', yomigana: 'h', meaning: 'i' }],
+  ['J2001', 10, {}],
+])('get word', async (level, index, expected) => {
+  const word = await get(`/api/select/${level}/${index}`);
+  expect(word).toEqual(expected);
+});
+
 test('get meta', async () => {
   const { langs, summary } = await get('/api/meta');
   expect(langs).toStrictEqual({

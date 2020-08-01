@@ -6,6 +6,7 @@ const {
   getLangSummary,
   getSummary,
   getMatch,
+  getWord,
 } = require('.');
 
 beforeAll(async () => {
@@ -50,4 +51,14 @@ test.each([
 ])('get match', async (patterns, count) => {
   const rows = await getMatch(patterns);
   expect(rows.length).toBe(count);
+});
+
+test.each([
+  ['E2001', 1, { word: 'a', yomigana: 'b', meaning: 'c' }],
+  ['F2001', 1, { word: 'd', yomigana: 'e', meaning: 'f' }],
+  ['J2001', 1, { word: 'g', yomigana: 'h', meaning: 'i' }],
+  ['J2001', 10, {}],
+])('get word', async (level, index, expected) => {
+  const word = await getWord(level, index);
+  expect(word).toEqual(expected);
 });

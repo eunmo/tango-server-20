@@ -1,6 +1,6 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { act, render, fireEvent } from '@testing-library/react';
 import mediaQuery from 'css-mediaquery';
 import Search from '../search';
 import words from './words';
@@ -46,11 +46,13 @@ test('renders search box', () => {
   expect(getByPlaceholderText('Search Tango')).toBeInTheDocument();
 });
 
-test('prevents empty query', () => {
+test('prevents empty query', async () => {
   const { getByRole } = renderSearch(900);
   const submit = getByRole('button', { name: 'search' });
 
-  fireEvent.click(submit);
+  await act(async () => {
+    fireEvent.click(submit);
+  });
 
   expect(calledUrls.length).toBe(0);
 });
@@ -61,9 +63,9 @@ test('renders search results', async () => {
   const submit = getByRole('button', { name: 'search' });
 
   fireEvent.change(textField, { target: { value: 'happy' } });
-  fireEvent.click(submit);
-
-  await waitFor(() => getByRole('table'));
+  await act(async () => {
+    fireEvent.click(submit);
+  });
 
   expect(getByRole('table')).toBeInTheDocument();
 
@@ -78,9 +80,9 @@ test('renders empty query', async () => {
   const submit = getByRole('button', { name: 'search' });
 
   fireEvent.change(textField, { target: { value: 'xxx' } });
-  fireEvent.click(submit);
-
-  await waitFor(() => getByRole('heading'));
+  await act(async () => {
+    fireEvent.click(submit);
+  });
 
   expect(getByRole('heading')).toBeInTheDocument();
   expect(queryByRole('table')).toBe(null);

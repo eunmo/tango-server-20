@@ -4,6 +4,22 @@ const get = (url, callback) => {
     .then(callback);
 };
 
+const put = (url, body, callback) => {
+  fetch(url, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).then(callback);
+};
+
+const fetchDelete = (url, body, callback) => {
+  fetch(url, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).then(callback);
+};
+
 const sortWordsByPattern = (patterns, words) => {
   const localeOption = { sensitivity: 'base', ignorePunctuation: true };
   const localeCompare = (a, b) => a.localeCompare(b, 'fr', localeOption) === 0;
@@ -35,4 +51,4 @@ const sortWordsByPattern = (patterns, words) => {
   return [...exact, ...startsWith, ...remainder];
 };
 
-export { get, sortWordsByPattern };
+export { get, put, fetchDelete, sortWordsByPattern };
