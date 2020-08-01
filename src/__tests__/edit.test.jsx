@@ -75,6 +75,29 @@ test('edit word', async () => {
   expect(location.pathname).toBe(`/search/${word}`);
 });
 
+test('trim word', async () => {
+  const [level, index] = ['E2001', '1'];
+  const [word, yomigana, meaning] = ['word', 'yomigana', 'meaning'];
+  const editWord = { level, index, word, yomigana, meaning };
+
+  await renderEdit(level, index);
+  const { getByLabelText } = screen;
+  fireEvent.change(getByLabelText('word'), { target: { value: `${word} ` } });
+  fireEvent.change(getByLabelText('yomigana'), {
+    target: { value: `${yomigana} ` },
+  });
+  fireEvent.change(getByLabelText('meaning'), {
+    target: { value: `${meaning} ` },
+  });
+
+  await act(async () => {
+    fireEvent.click(getByLabelText('edit'));
+  });
+
+  expect(optionBody).toEqual(JSON.stringify(editWord));
+  expect(location.pathname).toBe(`/search/${word}`);
+});
+
 test('delete word', async () => {
   const [level, index] = ['E2001', '1'];
   const deleteWord = { level, index };

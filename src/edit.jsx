@@ -39,15 +39,15 @@ export default () => {
   }, [level, index]);
 
   const onWord = (e) => {
-    setWord(e.target.value);
+    setWord(e.target.value.trim());
   };
 
   const onYomigana = (e) => {
-    setYomigana(e.target.value);
+    setYomigana(e.target.value.trim());
   };
 
   const onMeaning = (e) => {
-    setMeaning(e.target.value);
+    setMeaning(e.target.value.trim());
   };
 
   const edit = () => {
