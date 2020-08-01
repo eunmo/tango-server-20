@@ -1,32 +1,26 @@
 import React from 'react';
-import { rest } from 'msw';
-import { setupServer } from 'msw/node';
 import { MemoryRouter } from 'react-router-dom';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import mediaQuery from 'css-mediaquery';
 import Search from '../search';
 import words from './words';
 
-let queryCount = 0;
-const server = setupServer(
-  rest.get('/api/search/:keyword', (req, res, ctx) => {
-    queryCount += 1;
-    const { keyword } = req.params;
-    if (keyword === 'happy') {
-      return res(ctx.json({ patterns: ['happy'], words }));
-    }
+let calledUrls = null;
 
-    return res(ctx.json({ patterns: [], words: [] }));
-  })
-);
-
-beforeAll(() => server.listen());
 beforeEach(() => {
-  queryCount = 0;
+  calledUrls = [];
+  jest.spyOn(global, 'fetch').mockImplementation((url) => {
+    let response = { patterns: [], words: [] };
+    if (url === '/api/search/happy') {
+      response = { patterns: ['happy'], words };
+    }
+    calledUrls.push(url);
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve(response),
+    });
+  });
 });
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
 
 function createMatchMedia(width) {
   return (query) => ({
@@ -58,7 +52,7 @@ test('prevents empty query', () => {
 
   fireEvent.click(submit);
 
-  expect(queryCount).toBe(0);
+  expect(calledUrls.length).toBe(0);
 });
 
 test('renders search results', async () => {
