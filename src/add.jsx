@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 
-import { get, put, fetchDelete } from './utils';
+import { post, getYYMM } from './utils';
 
 const useStyles = makeStyles({
   header: {
@@ -14,32 +14,52 @@ const useStyles = makeStyles({
   },
   buttons: {
     display: 'flex',
-    justifyContent: 'space-between',
   },
   button: {
     marginTop: '24px',
+    marginRight: '8px',
   },
 });
 
+const languages = [
+  { key: 'E', emoji: '🇬🇧' },
+  { key: 'F', emoji: '🇫🇷' },
+  { key: 'J', emoji: '🇯🇵' },
+];
+
 export default () => {
-  const { level, index } = useParams();
   const history = useHistory();
+  const [yymm] = useState(getYYMM());
   const [word, setWord] = useState('');
   const [yomigana, setYomigana] = useState('');
   const [meaning, setMeaning] = useState('');
   const classes = useStyles();
 
-  useEffect(() => {
-    get(`/api/select/${level}/${index}`, (data) => {
-      const { word: w, yomigana: y, meaning: m } = data;
-      setWord(w ?? '');
-      setYomigana(y ?? '');
-      setMeaning(m ?? '');
-    });
-  }, [level, index]);
-
   const onWord = (e) => {
-    setWord(e.target.value);
+    let [newWord, newYomigana] = [e.target.value.replace('’', "'"), null];
+    let [opener, closer] = ['[', ']'];
+    let index = newWord.indexOf(opener);
+    if (index !== -1) {
+      newYomigana = newWord.slice(0, index).replace(/\s/g, '');
+      newWord = newWord.slice(index + 1).replace(closer, '');
+    }
+
+    [opener, closer] = ['（', '）'];
+    index = newWord.indexOf(opener);
+    if (index !== -1) {
+      newYomigana = newWord.slice(index + 1).replace(closer, '');
+      newWord = newWord.slice(0, index).replace(/\s/g, '');
+    }
+
+    index = newWord.lastIndexOf('·');
+    if (index !== -1) {
+      newWord = newWord.slice(index + 1);
+    }
+
+    if (newYomigana) {
+      setYomigana(newYomigana);
+    }
+    setWord(newWord);
   };
 
   const onYomigana = (e) => {
@@ -50,12 +70,12 @@ export default () => {
     setMeaning(e.target.value);
   };
 
-  const edit = () => {
-    put(
+  const add = (lang) => {
+    const level = lang + yymm;
+    post(
       '/api/crud',
       {
         level,
-        index,
         word: word.trim(),
         yomigana: yomigana.trim(),
         meaning: meaning.trim(),
@@ -66,16 +86,10 @@ export default () => {
     );
   };
 
-  const remove = () => {
-    fetchDelete('/api/crud', { level, index }, () => {
-      history.push(`/search/${word.trim()}`);
-    });
-  };
-
   return (
     <>
       <Typography variant="h5" className={classes.header}>
-        {`Edit ${level}: ${index}`}
+        {`New Word for ${yymm}`}
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
@@ -107,24 +121,17 @@ export default () => {
         </Grid>
       </Grid>
       <div className={classes.buttons}>
-        <Button
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={edit}
-          aria-label="edit"
-        >
-          edit
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          className={classes.button}
-          onClick={remove}
-          aria-label="remove"
-        >
-          remove
-        </Button>
+        {languages.map(({ key, emoji }) => (
+          <Button
+            key={key}
+            variant="contained"
+            className={classes.button}
+            onClick={() => add(key)}
+            aria-label={`add ${key}`}
+          >
+            {emoji}
+          </Button>
+        ))}
       </div>
     </>
   );

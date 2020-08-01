@@ -4,6 +4,14 @@ const get = (url, callback) => {
     .then(callback);
 };
 
+const post = (url, body, callback) => {
+  fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  }).then(callback);
+};
+
 const put = (url, body, callback) => {
   fetch(url, {
     method: 'PUT',
@@ -35,7 +43,7 @@ const sortWordsByPattern = (patterns, words) => {
           return true;
         }
 
-        if (localeCompare(word[key].substring(0, pattern.length), pattern)) {
+        if (localeCompare(word[key].slice(0, pattern.length), pattern)) {
           startsWith.push(word);
           return true;
         }
@@ -51,4 +59,6 @@ const sortWordsByPattern = (patterns, words) => {
   return [...exact, ...startsWith, ...remainder];
 };
 
-export { get, put, fetchDelete, sortWordsByPattern };
+const getYYMM = () => new Date().toISOString().slice(2, 7).replace(/-/, '');
+
+export { get, post, put, fetchDelete, sortWordsByPattern, getYYMM };

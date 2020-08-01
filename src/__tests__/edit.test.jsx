@@ -19,7 +19,7 @@ beforeEach(() => {
     }
 
     const index = '/api/search/'.length;
-    const response = wordMap[url.substring(index, index + 1)] ?? {};
+    const response = wordMap[url.slice(index, index + 1)] ?? {};
     return Promise.resolve({
       ok: true,
       json: () => Promise.resolve(response),

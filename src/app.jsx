@@ -10,6 +10,7 @@ import Container from '@material-ui/core/Container';
 import AppBar from './app-bar';
 import Search from './search';
 import Edit from './edit';
+import Add from './add';
 
 export default () => (
   <Router>
@@ -24,6 +25,9 @@ export default () => (
         </Route>
         <Route path="/edit/:level/:index">
           <Edit />
+        </Route>
+        <Route path="/add">
+          <Add />
         </Route>
         <Redirect from="/" to="/search" exact />
       </Switch>
