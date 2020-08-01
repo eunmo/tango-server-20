@@ -1,12 +1,11 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { act, render, fireEvent } from '@testing-library/react';
-import mediaQuery from 'css-mediaquery';
-import Search from '../search';
+import Search from '../searchRoute';
 import words from './words';
+import createMatchMedia from './createMatchMedia';
 
 let calledUrls = null;
-
 beforeEach(() => {
   calledUrls = [];
   jest.spyOn(global, 'fetch').mockImplementation((url) => {
@@ -21,14 +20,6 @@ beforeEach(() => {
     });
   });
 });
-
-function createMatchMedia(width) {
-  return (query) => ({
-    matches: mediaQuery.match(query, { width }),
-    addListener: () => {},
-    removeListener: () => {},
-  });
-}
 
 const renderSearch = (width) => {
   window.matchMedia = createMatchMedia(width);

@@ -8,7 +8,7 @@ import {
 import Container from '@material-ui/core/Container';
 
 import AppBar from './app-bar';
-import Search from './search';
+import Search from './searchRoute';
 import Edit from './edit';
 import Add from './add';
 

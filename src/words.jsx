@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles, styled } from '@material-ui/core/styles';
+import { styled } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
@@ -91,21 +91,9 @@ const SmUp = ({ words }) => (
   </Table>
 );
 
-const useStyles = makeStyles({
-  root: {
-    marginBottom: '16px',
-  },
-});
-
 export default ({ words }) => {
-  const classes = useStyles();
-
   return (
-    <TableContainer
-      component={Paper}
-      variant="outlined"
-      className={classes.root}
-    >
+    <TableContainer component={Paper} variant="outlined">
       <Hidden xsDown>
         <XsDown words={words} />
       </Hidden>

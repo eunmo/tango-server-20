@@ -4,20 +4,20 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import { ArrowDownward, ArrowUpward, Clear } from '@material-ui/icons';
 
+import Search from './search';
 import { post, getYYMM } from './utils';
 
 const useStyles = makeStyles({
-  header: {
-    margin: '16px 0px',
-  },
   buttons: {
     display: 'flex',
   },
-  button: {
-    marginTop: '24px',
-    marginRight: '8px',
+  buttonSearch: {
+    margin: '16px 8px 16px 0',
+  },
+  buttonSubmit: {
+    margin: '24px 8px 0 0',
   },
 });
 
@@ -33,10 +33,12 @@ export default () => {
   const [word, setWord] = useState('');
   const [yomigana, setYomigana] = useState('');
   const [meaning, setMeaning] = useState('');
+  const [keywordTo, setKeywordTo] = useState({});
+  const [keywordFrom, setKeywordFrom] = useState('');
   const classes = useStyles();
 
-  const onWord = (e) => {
-    let [newWord, newYomigana] = [e.target.value.replace('’', "'"), null];
+  const updateWord = (newValue) => {
+    let [newWord, newYomigana] = [newValue.replace('’', "'"), null];
     let [opener, closer] = ['[', ']'];
     let index = newWord.indexOf(opener);
     if (index !== -1) {
@@ -60,6 +62,10 @@ export default () => {
       setYomigana(newYomigana);
     }
     setWord(newWord);
+  };
+
+  const onWord = (e) => {
+    updateWord(e.target.value);
   };
 
   const onYomigana = (e) => {
@@ -86,11 +92,54 @@ export default () => {
     );
   };
 
+  const toSearch = () => {
+    let initialKeyword = word;
+    if (yomigana) {
+      initialKeyword = `${yomigana}[${word}`;
+    }
+    setKeywordTo({ initialKeyword });
+  };
+
+  const fromSearch = () => {
+    updateWord(keywordFrom);
+  };
+
+  const clearAll = () => {
+    setWord('');
+    setYomigana('');
+    setMeaning('');
+    setKeywordTo({ initialKeyword: '' });
+  };
+
   return (
     <>
-      <Typography variant="h5" className={classes.header}>
-        {`New Word for ${yymm}`}
-      </Typography>
+      <Search initialValue={keywordTo} onChange={setKeywordFrom} />
+      <div className={classes.buttons}>
+        <Button
+          variant="contained"
+          className={classes.buttonSearch}
+          onClick={toSearch}
+          aria-label="to search"
+        >
+          <ArrowUpward />
+        </Button>
+        <Button
+          variant="contained"
+          className={classes.buttonSearch}
+          onClick={fromSearch}
+          aria-label="from search"
+        >
+          <ArrowDownward />
+        </Button>
+        <Button
+          variant="contained"
+          className={classes.buttonSearch}
+          onClick={clearAll}
+          aria-label="clear all"
+        >
+          <Clear />
+        </Button>
+      </div>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -125,7 +174,7 @@ export default () => {
           <Button
             key={key}
             variant="contained"
-            className={classes.button}
+            className={classes.buttonSubmit}
             onClick={() => add(key)}
             aria-label={`add ${key}`}
           >

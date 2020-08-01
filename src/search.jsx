@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,7 +11,7 @@ import { get, sortWordsByPattern } from './utils';
 
 const useStyles = makeStyles({
   root: {
-    margin: '16px 0px',
+    marginTop: '16px',
     padding: '2px 4px',
     display: 'flex',
     flexGrow: 1,
@@ -24,12 +23,11 @@ const useStyles = makeStyles({
     padding: 10,
   },
   header: {
-    margin: '0 0 16px 16px',
+    margin: '16px 0 16px 16px',
   },
 });
 
-export default () => {
-  const { keyword: defaultKeyword } = useParams();
+export default ({ initialValue, onChange = () => {} }) => {
   const [keyword, setKeyword] = useState('');
   const [words, setWords] = useState([]);
   const [patterns, setPatterns] = useState(null);
@@ -45,11 +43,16 @@ export default () => {
   };
 
   useEffect(() => {
-    if (defaultKeyword) {
-      setKeyword(defaultKeyword);
-      search(defaultKeyword);
-    }
-  }, [defaultKeyword]);
+    const { initialKeyword = '' } = initialValue;
+    setKeyword(initialKeyword);
+    search(initialKeyword);
+    setWords([]);
+    setPatterns(null);
+  }, [initialValue]);
+
+  useEffect(() => {
+    onChange(keyword);
+  }, [keyword, onChange]);
 
   const submit = (e) => {
     e.preventDefault();
