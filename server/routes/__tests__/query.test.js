@@ -2,6 +2,8 @@ const request = require('supertest');
 const { prepare, cleanup } = require('../../db/mock');
 const app = require('../../app');
 
+jest.mock('../util');
+
 beforeAll(async () => {
   await prepare();
 });
@@ -46,46 +48,97 @@ test.each([
 });
 
 test('get meta', async () => {
-  const { langs, summary } = await get('/api/meta');
+  const { langs, levels } = await get('/api/meta/-540');
   expect(langs).toStrictEqual({
-    E: { learned: 1, learning: 14, new: 3 },
-    F: { learned: 1, learning: 14, new: 3 },
-    J: { learned: 2, learning: 14, new: 3 },
+    E: { learned: 15, learning: 14, fresh: 3 },
+    F: { learned: 15, learning: 14, fresh: 3 },
+    J: { learned: 16, learning: 14, fresh: 3 },
   });
-  expect(summary).toStrictEqual([
-    { lang: 'E', streak: 0, hour: null, count: 3 },
-    { lang: 'E', streak: 1, hour: '2020-07-12T22:00:00.000Z', count: 2 },
-    { lang: 'E', streak: 2, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'E', streak: 3, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'E', streak: 4, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'E', streak: 5, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'E', streak: 6, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'E', streak: 7, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'E', streak: 8, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'E', streak: 9, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'E', streak: 10, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'F', streak: 0, hour: null, count: 3 },
-    { lang: 'F', streak: 1, hour: '2020-07-12T22:00:00.000Z', count: 2 },
-    { lang: 'F', streak: 2, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'F', streak: 3, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'F', streak: 4, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'F', streak: 5, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'F', streak: 6, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'F', streak: 7, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'F', streak: 8, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'F', streak: 9, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'F', streak: 10, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'J', streak: 0, hour: null, count: 3 },
-    { lang: 'J', streak: 1, hour: '2020-07-12T22:00:00.000Z', count: 2 },
-    { lang: 'J', streak: 2, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'J', streak: 3, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'J', streak: 4, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'J', streak: 5, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'J', streak: 6, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'J', streak: 7, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'J', streak: 8, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'J', streak: 9, hour: '2020-07-12T22:00:00.000Z', count: 1 },
-    { lang: 'J', streak: 10, hour: '2020-07-12T22:00:00.000Z', count: 1 },
+  expect(levels).toStrictEqual([
+    {
+      level: 'E2001',
+      summary: [
+        [0, 0, 1],
+        [8, 7, 1],
+        [9, 8, 1],
+        [10, 9, 1],
+      ],
+    },
+    {
+      level: 'E2002',
+      summary: [
+        [0, 0, 1],
+        [4, 3, 1],
+        [5, 4, 1],
+        [6, 5, 1],
+        [7, 6, 1],
+      ],
+    },
+    {
+      level: 'E2003',
+      summary: [
+        [0, 0, 1],
+        [1, 0, 2],
+        [2, 1, 1],
+        [3, 2, 1],
+      ],
+    },
+    {
+      level: 'F2001',
+      summary: [
+        [0, 0, 1],
+        [8, 7, 1],
+        [9, 8, 1],
+        [10, 9, 1],
+      ],
+    },
+    {
+      level: 'F2002',
+      summary: [
+        [0, 0, 1],
+        [4, 3, 1],
+        [5, 4, 1],
+        [6, 5, 1],
+        [7, 6, 1],
+      ],
+    },
+    {
+      level: 'F2003',
+      summary: [
+        [0, 0, 1],
+        [1, 0, 2],
+        [2, 1, 1],
+        [3, 2, 1],
+      ],
+    },
+    {
+      level: 'J2001',
+      summary: [
+        [0, 0, 1],
+        [8, 7, 1],
+        [9, 8, 1],
+        [10, 9, 1],
+      ],
+    },
+    {
+      level: 'J2002',
+      summary: [
+        [0, 0, 1],
+        [4, 3, 1],
+        [5, 4, 1],
+        [6, 5, 1],
+        [7, 6, 1],
+      ],
+    },
+    {
+      level: 'J2003',
+      summary: [
+        [0, 0, 1],
+        [1, 0, 2],
+        [2, 1, 1],
+        [3, 2, 1],
+      ],
+    },
   ]);
 });
 

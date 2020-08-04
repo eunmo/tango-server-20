@@ -11,7 +11,6 @@ import { get, sortWordsByPattern } from './utils';
 
 const useStyles = makeStyles({
   root: {
-    marginTop: '16px',
     padding: '2px 4px',
     display: 'flex',
     flexGrow: 1,

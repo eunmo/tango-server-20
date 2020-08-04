@@ -10,6 +10,7 @@ import { Add, Details, Search } from '@material-ui/icons';
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
+    marginBottom: '16px',
   },
   title: {
     flexGrow: 1,

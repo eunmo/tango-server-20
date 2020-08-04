@@ -26,13 +26,13 @@ const getLangSummary = async () => {
 
 const getSummary = async () => {
   return query(`
-    SELECT SUBSTR(level, 1, 1) as lang, streak,
+    SELECT level, streak,
            DATE_FORMAT(lastCorrect, '%Y-%m-%dT%H:00:00.000Z') as hour,
            count(*) as count
       FROM words
      WHERE streak < 11
-  GROUP BY lang, streak, hour
-  ORDER BY lang, streak, hour`);
+  GROUP BY level, streak, hour
+  ORDER BY level, streak, hour`);
 };
 
 const getMatch = async (patterns) => {

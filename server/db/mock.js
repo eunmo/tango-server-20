@@ -1,8 +1,8 @@
 const { dml, cleanup: dbCleanup } = require('@eunmo/mysql');
 const { add, sync } = require('./dml');
 
-const lastCorrect = '2020-07-12T22:15:12.000Z';
-const lastCorrect2 = '2020-07-12T22:45:12.000Z';
+const lastCorrect = '2020-07-12T22:15:12.000+09:00';
+const lastCorrect2 = '2020-07-12T22:45:12.000+09:00';
 
 const prepare = async () => {
   await dml('DROP TABLE IF EXISTS words;');

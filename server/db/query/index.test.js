@@ -41,7 +41,7 @@ test('get language summary', async () => {
 
 test('get summary', async () => {
   const rows = await getSummary();
-  expect(rows.length).toBe(33);
+  expect(rows.length).toBe(39);
 });
 
 test.each([

@@ -11,6 +11,7 @@ import AppBar from './app-bar';
 import Search from './searchRoute';
 import Edit from './edit';
 import Add from './add';
+import Summary from './summary';
 
 export default () => (
   <Router>
@@ -28,6 +29,9 @@ export default () => (
         </Route>
         <Route path="/add">
           <Add />
+        </Route>
+        <Route path="/summary">
+          <Summary />
         </Route>
         <Redirect from="/" to="/search" exact />
       </Switch>
