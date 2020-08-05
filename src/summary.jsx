@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     margin: '0 8px 0 0',
   },
   paper: {
-    marginTop: '16px',
+    marginTop: '8px',
     padding: '8px 0',
   },
   number: {
