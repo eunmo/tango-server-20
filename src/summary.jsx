@@ -99,7 +99,7 @@ export default () => {
   }, []);
 
   const toTitle = ({ learning, fresh }) => {
-    return fresh === 0 ? learning : `${learning} [${fresh}]`;
+    return fresh === 0 ? learning : `${learning}.${fresh}`;
   };
 
   const filterByLang = (lang) => {
@@ -111,7 +111,7 @@ export default () => {
       <Grid container spacing={1}>
         {langs.map(([lang, summary]) => (
           <Grid item key={lang} xs={4}>
-            <Card elevation={3}>
+            <Card variant="outlined">
               <ButtonBase
                 className={classes.cardAction}
                 onClick={() => filterByLang(lang)}
@@ -138,7 +138,7 @@ export default () => {
           </Grid>
         ))}
       </Grid>
-      <Paper elevation={2}>
+      <Paper variant="outlined">
         <Grid container spacing={1} className={classes.days}>
           {months.map(({ month, streaks }) => (
             <Grid key={month} container item xs={12} spacing={1}>
@@ -160,7 +160,7 @@ export default () => {
           ))}
         </Grid>
       </Paper>
-      <Paper>
+      <Paper variant="outlined">
         <Grid container spacing={1} className={classes.days}>
           {days.map(({ day, streaks, sum }) => (
             <Grid key={day} container item xs={12} spacing={1}>

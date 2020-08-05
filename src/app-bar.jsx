@@ -31,6 +31,10 @@ const getIconButton = (name, icon) => (
 export default () => {
   const classes = useStyles();
 
+  if (window.isWebkit) {
+    return <div className={classes.root} />;
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static">

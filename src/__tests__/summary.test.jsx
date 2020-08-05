@@ -39,11 +39,11 @@ test('renders langs', async () => {
   expect(eBtn).toContainElement(getByText('10'));
 
   expect(getByText('F')).toBeInTheDocument();
-  expect(getByText('10 [1]')).toBeInTheDocument();
+  expect(getByText('10.1')).toBeInTheDocument();
   expect(getByText('100')).toBeInTheDocument();
 
   expect(fBtn).toContainElement(getByText('F'));
-  expect(fBtn).toContainElement(getByText('10 [1]'));
+  expect(fBtn).toContainElement(getByText('10.1'));
   expect(fBtn).toContainElement(getByText('100'));
 });
 
