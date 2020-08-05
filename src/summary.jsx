@@ -107,6 +107,10 @@ export default () => {
     setSelectedLang(lang === selectedLang ? 'all' : lang);
   };
 
+  if (langs.length === 0) {
+    return null;
+  }
+
   return (
     <>
       <Grid container spacing={1}>
