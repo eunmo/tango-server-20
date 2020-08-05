@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   avatar: {
     margin: '0 8px 0 0',
   },
-  days: {
+  paper: {
     marginTop: '16px',
   },
   number: {
@@ -138,8 +138,8 @@ export default () => {
           </Grid>
         ))}
       </Grid>
-      <Paper variant="outlined">
-        <Grid container spacing={1} className={classes.days}>
+      <Paper variant="outlined" className={classes.paper}>
+        <Grid container spacing={1}>
           {months.map(({ month, streaks }) => (
             <Grid key={month} container item xs={12} spacing={1}>
               <Grid item xs={2} className={classes.number}>
@@ -160,8 +160,8 @@ export default () => {
           ))}
         </Grid>
       </Paper>
-      <Paper variant="outlined">
-        <Grid container spacing={1} className={classes.days}>
+      <Paper variant="outlined" className={classes.paper}>
+        <Grid container spacing={1}>
           {days.map(({ day, streaks, sum }) => (
             <Grid key={day} container item xs={12} spacing={1}>
               <Grid
