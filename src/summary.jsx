@@ -24,6 +24,7 @@ const useStyles = makeStyles({
   },
   paper: {
     marginTop: '16px',
+    padding: '8px 0',
   },
   number: {
     textAlign: 'right',
