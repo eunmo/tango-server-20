@@ -22,9 +22,6 @@ const useStyles = makeStyles({
   avatar: {
     margin: '0 8px 0 0',
   },
-  selectedAvatar: {
-    backgroundColor: deepOrange[500],
-  },
   days: {
     marginTop: '16px',
   },
@@ -32,6 +29,10 @@ const useStyles = makeStyles({
     textAlign: 'right',
   },
 });
+
+const selected = {
+  backgroundColor: deepOrange[500],
+};
 
 export default () => {
   const [langs, setLangs] = useState([]);
@@ -114,6 +115,7 @@ export default () => {
               <ButtonBase
                 className={classes.cardAction}
                 onClick={() => filterByLang(lang)}
+                aria-label={lang}
               >
                 <CardHeader
                   classes={{
@@ -122,9 +124,8 @@ export default () => {
                   }}
                   avatar={
                     <Avatar
-                      className={
-                        selectedLang === lang ? classes.selectedAvatar : ''
-                      }
+                      style={selectedLang === lang ? selected : {}}
+                      aria-label={`Avatar-${lang}`}
                     >
                       {lang}
                     </Avatar>
@@ -150,6 +151,7 @@ export default () => {
                   item
                   xs={1}
                   className={classes.number}
+                  data-testid={`M-${month}-${streak.streak}`}
                 >
                   {streak[selectedLang] === 0 ? null : streak[selectedLang]}
                 </Grid>
@@ -162,7 +164,12 @@ export default () => {
         <Grid container spacing={1} className={classes.days}>
           {days.map(({ day, streaks, sum }) => (
             <Grid key={day} container item xs={12} spacing={1}>
-              <Grid item xs={2} className={classes.number}>
+              <Grid
+                item
+                xs={2}
+                className={classes.number}
+                data-testid={`D-${day}`}
+              >
                 <b>{sum[selectedLang]}</b>
               </Grid>
               {streaks.map((streak) => (
@@ -171,6 +178,7 @@ export default () => {
                   item
                   xs={1}
                   className={classes.number}
+                  data-testid={`D-${day}-${streak.streak}`}
                 >
                   {streak[selectedLang] === 0 ? null : streak[selectedLang]}
                 </Grid>
