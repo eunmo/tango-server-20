@@ -1,6 +1,6 @@
 function trimDate(date, offset) {
   const baseDate = new Date(date);
-  baseDate.setMinutes(baseDate.getMinutes() + offset);
+  baseDate.setMinutes(baseDate.getMinutes() - offset);
 
   if (baseDate.getUTCHours() < 5) {
     baseDate.setUTCDate(baseDate.getUTCDate() - 1);

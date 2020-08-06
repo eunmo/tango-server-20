@@ -47,7 +47,7 @@ router.get('/:tzOffset', async (req, res) => {
     if (levels[level] === undefined) {
       levels[level] = { level, summary: [] };
     }
-    levels[level].summary.push([streak, streak - diff, count]);
+    levels[level].summary.push([streak, Math.max(0, streak - diff), count]);
   });
 
   res.json({ langs, levels: Object.values(levels) });
