@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
@@ -30,8 +30,12 @@ const getIconButton = (name, icon) => (
 
 export default () => {
   const classes = useStyles();
+  const history = useHistory();
 
   if (window.isWebkit) {
+    window.wkLink = (url) => {
+      history.push(url);
+    };
     return <div className={classes.root} />;
   }
 
