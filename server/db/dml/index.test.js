@@ -86,3 +86,9 @@ test('insert two then sync', async () => {
 test('empty sync', async () => {
   await sync([]);
 });
+
+test('insert one', async () => {
+  await add('a', "b'c", '', '');
+  const rows = await query('SELECT * FROM words');
+  expect(rows.length).toBe(1);
+});

@@ -1,6 +1,6 @@
 const { dml, query } = require('@eunmo/mysql');
 
-const str = (string) => `'${string}'`;
+const str = (string) => `"${string}"`;
 function formatDate(date) {
   const time = new Date(date);
   return time.toISOString().slice(0, 19).replace('T', ' ');

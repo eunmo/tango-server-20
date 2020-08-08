@@ -38,7 +38,7 @@ test.each([
 });
 
 test.each([
-  ['E2001', 1, { word: 'a', yomigana: 'b', meaning: 'c' }],
+  ['E2001', 1, { word: 'a', yomigana: 'b', meaning: "c'c" }],
   ['F2001', 1, { word: 'd', yomigana: 'e', meaning: 'f' }],
   ['J2001', 1, { word: 'g', yomigana: 'h', meaning: 'i' }],
   ['J2001', 10, {}],

@@ -39,7 +39,7 @@ const getMatch = async (patterns) => {
   const filters = [];
   patterns.forEach((pattern) => {
     ['word', 'yomigana', 'meaning'].forEach((column) => {
-      filters.push(`${column} LIKE '%${pattern}%'`);
+      filters.push(`${column} LIKE "%${pattern}%"`);
     });
   });
 

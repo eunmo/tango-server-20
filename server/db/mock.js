@@ -10,7 +10,7 @@ const prepare = async () => {
   await add(`N0`, 'j', 'k', 'l');
   for (let i = 1; i < 4; i += 1) {
     for (let j = 0; j < 5; j += 1) {
-      await add(`E200${i}`, 'a', 'b', 'c'); // eslint-disable-line no-await-in-loop
+      await add(`E200${i}`, 'a', 'b', "c'c"); // eslint-disable-line no-await-in-loop
       await add(`F200${i}`, 'd', 'e', 'f'); // eslint-disable-line no-await-in-loop
       await add(`J200${i}`, 'g', 'h', 'i'); // eslint-disable-line no-await-in-loop
     }

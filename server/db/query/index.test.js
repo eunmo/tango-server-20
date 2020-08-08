@@ -48,13 +48,14 @@ test.each([
   [['a'], 15],
   [['a', 'b'], 15],
   [['a', 'd'], 30],
+  [["c'c"], 15],
 ])('get match', async (patterns, count) => {
   const rows = await getMatch(patterns);
   expect(rows.length).toBe(count);
 });
 
 test.each([
-  ['E2001', 1, { word: 'a', yomigana: 'b', meaning: 'c' }],
+  ['E2001', 1, { word: 'a', yomigana: 'b', meaning: "c'c" }],
   ['F2001', 1, { word: 'd', yomigana: 'e', meaning: 'f' }],
   ['J2001', 1, { word: 'g', yomigana: 'h', meaning: 'i' }],
   ['J2001', 10, {}],
