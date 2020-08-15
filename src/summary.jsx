@@ -50,6 +50,7 @@ export default () => {
   const [langs, setLangs] = useState([]);
   const [days, setDays] = useState([]);
   const [months, setMonths] = useState([]);
+  const [sums, setSums] = useState([]);
   const [selectedLang, setSelectedLang] = useState('all');
   const classes = useStyles();
 
@@ -67,6 +68,11 @@ export default () => {
         }
       }
 
+      const newSums = [];
+      for (let i = 0; i < 10; i += 1) {
+        newSums[i] = { streak: i, ...countBase };
+      }
+
       const monthSet = {};
       levels.forEach(({ level, summary }) => {
         const lang = level.substring(0, 1);
@@ -78,9 +84,12 @@ export default () => {
           newDays[day].streaks[index].all += count;
           newDays[day].sum[lang] += count;
           newDays[day].sum.all += count;
+          newSums[index][lang] += count;
+          newSums[index].all += count;
         });
       });
       setDays(newDays);
+      setSums(newSums);
 
       let monthKeys = Object.keys(monthSet).sort();
       if (monthKeys.length > 10) {
@@ -158,7 +167,10 @@ export default () => {
           </Grid>
         ))}
       </Grid>
-      <Paper variant="outlined" className={classes.paper}>
+      <Paper
+        variant="outlined"
+        className={`${classes.paper} ${classes.paperWithFab}`}
+      >
         <Grid container spacing={1}>
           {months.map(({ month, streaks }) => (
             <Grid key={month} container item xs={12} spacing={1}>
@@ -178,13 +190,22 @@ export default () => {
               ))}
             </Grid>
           ))}
-        </Grid>
-      </Paper>
-      <Paper
-        variant="outlined"
-        className={`${classes.paper} ${classes.paperWithFab}`}
-      >
-        <Grid container spacing={1}>
+          <Grid container item xs={12} spacing={1}>
+            <Grid item xs={2} className={classes.number} />
+            {sums.map((streak) => (
+              <Grid
+                key={streak.streak}
+                item
+                xs={1}
+                className={classes.number}
+                data-testid={`S-${streak.streak}`}
+              >
+                <b>
+                  {streak[selectedLang] === 0 ? null : streak[selectedLang]}
+                </b>
+              </Grid>
+            ))}
+          </Grid>
           {days.map(({ day, streaks, sum }) => (
             <Grid key={day} container item xs={12} spacing={1}>
               <Grid

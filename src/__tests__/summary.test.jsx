@@ -117,6 +117,9 @@ test('renders short levels', async () => {
   expect(getByTestId('M-2008-8').textContent).toBe('6');
   expect(getByTestId('M-2008-9').textContent).toBe('5');
 
+  expect(getByTestId('S-8').textContent).toBe('6');
+  expect(getByTestId('S-9').textContent).toBe('5');
+
   expect(getByTestId('D-0').textContent).toBe('1');
   expect(getByTestId('D-0-9').textContent).toBe('1');
   expect(getByTestId('D-1').textContent).toBe('7');
@@ -142,6 +145,9 @@ test('renders short levels filter by lang', async () => {
   expect(getByTestId('M-2008-8').textContent).toBe('');
   expect(getByTestId('M-2008-9').textContent).toBe('1');
 
+  expect(getByTestId('S-8').textContent).toBe('');
+  expect(getByTestId('S-9').textContent).toBe('1');
+
   expect(getByTestId('D-0').textContent).toBe('0');
   expect(getByTestId('D-0-9').textContent).toBe('');
   expect(getByTestId('D-1').textContent).toBe('1');
@@ -154,6 +160,9 @@ test('renders short levels filter by lang', async () => {
 
   expect(getByTestId('M-2008-8').textContent).toBe('6');
   expect(getByTestId('M-2008-9').textContent).toBe('4');
+
+  expect(getByTestId('S-8').textContent).toBe('6');
+  expect(getByTestId('S-9').textContent).toBe('4');
 
   expect(getByTestId('D-0').textContent).toBe('1');
   expect(getByTestId('D-0-9').textContent).toBe('1');
@@ -221,6 +230,9 @@ test('refresh', async () => {
   expect(getByText('2008')).toBeInTheDocument();
   expect(getByTestId('M-2008-8').textContent).toBe('6');
   expect(getByTestId('M-2008-9').textContent).toBe('5');
+
+  expect(getByTestId('S-8').textContent).toBe('6');
+  expect(getByTestId('S-9').textContent).toBe('5');
 
   expect(getByTestId('D-0').textContent).toBe('1');
   expect(getByTestId('D-0-9').textContent).toBe('1');
