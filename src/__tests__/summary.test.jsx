@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, fireEvent } from '@testing-library/react';
+import { act, render, fireEvent, screen } from '@testing-library/react';
 
 import Summary from '../summary';
 
@@ -203,4 +203,30 @@ test('renders long levels', async () => {
   expect(queryByText('2012')).toBeInTheDocument();
 
   expect(getByTestId('M-Old-9').textContent).toBe('3');
+});
+
+test('refresh', async () => {
+  mockResponse = res1;
+  await act(async () => {
+    render(<Summary />);
+  });
+
+  mockResponse = res2;
+  await act(async () => {
+    fireEvent.click(screen.getByRole('button', { name: 'refresh' }));
+  });
+
+  const { getByText, getByTestId } = screen;
+
+  expect(getByText('2008')).toBeInTheDocument();
+  expect(getByTestId('M-2008-8').textContent).toBe('6');
+  expect(getByTestId('M-2008-9').textContent).toBe('5');
+
+  expect(getByTestId('D-0').textContent).toBe('1');
+  expect(getByTestId('D-0-9').textContent).toBe('1');
+  expect(getByTestId('D-1').textContent).toBe('7');
+  expect(getByTestId('D-1-8').textContent).toBe('3');
+  expect(getByTestId('D-1-9').textContent).toBe('4');
+  expect(getByTestId('D-2').textContent).toBe('3');
+  expect(getByTestId('D-2-8').textContent).toBe('3');
 });

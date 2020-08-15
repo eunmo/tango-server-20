@@ -4,10 +4,12 @@ import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
+import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Paper from '@material-ui/core/Paper';
 import { deepOrange } from '@material-ui/core/colors';
+import { Refresh } from '@material-ui/icons';
 
 import { get } from './utils';
 
@@ -30,6 +32,14 @@ const useStyles = makeStyles({
   number: {
     textAlign: 'right',
   },
+  paperWithFab: {
+    position: 'relative',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: '16px',
+    right: '16px',
+  },
 });
 
 const selected = {
@@ -43,7 +53,7 @@ export default () => {
   const [selectedLang, setSelectedLang] = useState('all');
   const classes = useStyles();
 
-  useEffect(() => {
+  function fetch() {
     const tzOffset = new Date().getTimezoneOffset();
     get(`/api/meta/${tzOffset}`, ({ langs: responseLangs, levels }) => {
       setLangs(Object.entries(responseLangs).sort());
@@ -98,6 +108,10 @@ export default () => {
       });
       setMonths(newMonths);
     });
+  }
+
+  useEffect(() => {
+    fetch();
   }, []);
 
   const toTitle = ({ learning, fresh }) => {
@@ -166,7 +180,10 @@ export default () => {
           ))}
         </Grid>
       </Paper>
-      <Paper variant="outlined" className={classes.paper}>
+      <Paper
+        variant="outlined"
+        className={`${classes.paper} ${classes.paperWithFab}`}
+      >
         <Grid container spacing={1}>
           {days.map(({ day, streaks, sum }) => (
             <Grid key={day} container item xs={12} spacing={1}>
@@ -192,6 +209,14 @@ export default () => {
             </Grid>
           ))}
         </Grid>
+        <Fab
+          color="primary"
+          aria-label="refresh"
+          className={classes.fab}
+          onClick={() => fetch()}
+        >
+          <Refresh />
+        </Fab>
       </Paper>
     </>
   );
