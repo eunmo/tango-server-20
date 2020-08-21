@@ -53,17 +53,13 @@ const selected = {
 
 export default () => {
   const [langs, setLangs] = useState([]);
-  const [days, setDays] = useState([]);
-  const [months, setMonths] = useState([]);
-  const [sums, setSums] = useState([]);
+  const [parsed, setParsed] = useState({});
   const [selectedLang, setSelectedLang] = useState('all');
   const classes = useStyles();
 
   function fetch() {
     const tzOffset = new Date().getTimezoneOffset();
     get(`/api/meta/${tzOffset}`, ({ langs: responseLangs, levels }) => {
-      setLangs(Object.entries(responseLangs).sort());
-
       const newDays = [];
       const countBase = { E: 0, F: 0, J: 0, all: 0 };
       for (let i = 0; i < 11; i += 1) {
@@ -93,8 +89,6 @@ export default () => {
           newSums[index].all += count;
         });
       });
-      setDays(newDays);
-      setSums(newSums);
 
       let monthKeys = Object.keys(monthSet).sort();
       if (monthKeys.length > 10) {
@@ -120,7 +114,9 @@ export default () => {
           month.streaks[index].all += count;
         });
       });
-      setMonths(newMonths);
+
+      setParsed({ months: newMonths, days: newDays, sums: newSums });
+      setLangs(Object.entries(responseLangs).sort());
     });
   }
 
@@ -139,6 +135,8 @@ export default () => {
   if (langs.length === 0) {
     return <LinearProgress />;
   }
+
+  const { months, days, sums } = parsed;
 
   return (
     <>
