@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Paper from '@material-ui/core/Paper';
 import { deepOrange } from '@material-ui/core/colors';
-import { Refresh } from '@material-ui/icons';
+import { Refresh, ShowChart } from '@material-ui/icons';
 
 import { get } from './utils';
 
@@ -31,6 +31,11 @@ const useStyles = makeStyles({
   },
   number: {
     textAlign: 'right',
+  },
+  icon: {
+    textAlign: 'right',
+    paddingTop: '2px !important',
+    height: '28px',
   },
   paperWithFab: {
     position: 'relative',
@@ -191,7 +196,9 @@ export default () => {
             </Grid>
           ))}
           <Grid container item xs={12} spacing={1}>
-            <Grid item xs={2} className={classes.number} />
+            <Grid item xs={2} className={classes.icon}>
+              <ShowChart />
+            </Grid>
             {sums.map((streak) => (
               <Grid
                 key={streak.streak}
