@@ -64,8 +64,8 @@ test('renders langs', async () => {
   expect(eAvatar).toBeInTheDocument();
   expect(fAvatar).toBeInTheDocument();
 
-  const normalColor = { backgroundColor: 'rgb(189, 189, 189)' };
-  const selectedColor = { backgroundColor: 'rgb(255, 87, 34)' };
+  const normalColor = { backgroundColor: '#bdbdbd' };
+  const selectedColor = { backgroundColor: '#f50057' };
 
   expect(eAvatar).toHaveStyle(normalColor);
   expect(fAvatar).toHaveStyle(normalColor);
@@ -171,6 +171,95 @@ test('renders short levels filter by lang', async () => {
   expect(getByTestId('D-1-9').textContent).toBe('3');
   expect(getByTestId('D-2').textContent).toBe('3');
   expect(getByTestId('D-2-8').textContent).toBe('3');
+});
+
+test('renders short levels filter by today', async () => {
+  mockResponse = res2;
+  let getByRole;
+  let getByTestId;
+  await act(async () => {
+    ({ getByRole, getByTestId } = render(<Summary />));
+  });
+
+  const todayBtn = getByRole('button', { name: 'today' });
+
+  fireEvent.click(todayBtn);
+
+  expect(getByTestId('M-2008-8').textContent).toBe('');
+  expect(getByTestId('M-2008-9').textContent).toBe('1');
+
+  expect(getByTestId('S-8').textContent).toBe('');
+  expect(getByTestId('S-9').textContent).toBe('1');
+
+  expect(getByTestId('D-0').textContent).toBe('1');
+  expect(getByTestId('D-0-9').textContent).toBe('1');
+  expect(getByTestId('D-1').textContent).toBe('0');
+  expect(getByTestId('D-1-8').textContent).toBe('');
+  expect(getByTestId('D-1-9').textContent).toBe('');
+  expect(getByTestId('D-2').textContent).toBe('0');
+  expect(getByTestId('D-2-8').textContent).toBe('');
+
+  fireEvent.click(todayBtn);
+
+  expect(getByTestId('M-2008-8').textContent).toBe('6');
+  expect(getByTestId('M-2008-9').textContent).toBe('5');
+
+  expect(getByTestId('S-8').textContent).toBe('6');
+  expect(getByTestId('S-9').textContent).toBe('5');
+
+  expect(getByTestId('D-0').textContent).toBe('1');
+  expect(getByTestId('D-0-9').textContent).toBe('1');
+  expect(getByTestId('D-1').textContent).toBe('7');
+  expect(getByTestId('D-1-8').textContent).toBe('3');
+  expect(getByTestId('D-1-9').textContent).toBe('4');
+  expect(getByTestId('D-2').textContent).toBe('3');
+  expect(getByTestId('D-2-8').textContent).toBe('3');
+});
+
+test('renders short levels filter by today and lang', async () => {
+  mockResponse = res2;
+  let getByRole;
+  let getByTestId;
+  await act(async () => {
+    ({ getByRole, getByTestId } = render(<Summary />));
+  });
+
+  const todayBtn = getByRole('button', { name: 'today' });
+  const eBtn = getByRole('button', { name: 'E' });
+  const fBtn = getByRole('button', { name: 'F' });
+
+  fireEvent.click(todayBtn);
+  fireEvent.click(eBtn);
+
+  expect(getByTestId('M-2008-8').textContent).toBe('');
+  expect(getByTestId('M-2008-9').textContent).toBe('');
+
+  expect(getByTestId('S-8').textContent).toBe('');
+  expect(getByTestId('S-9').textContent).toBe('');
+
+  expect(getByTestId('D-0').textContent).toBe('0');
+  expect(getByTestId('D-0-9').textContent).toBe('');
+  expect(getByTestId('D-1').textContent).toBe('0');
+  expect(getByTestId('D-1-8').textContent).toBe('');
+  expect(getByTestId('D-1-9').textContent).toBe('');
+  expect(getByTestId('D-2').textContent).toBe('0');
+  expect(getByTestId('D-2-8').textContent).toBe('');
+
+  fireEvent.click(fBtn);
+
+  expect(getByTestId('M-2008-8').textContent).toBe('');
+  expect(getByTestId('M-2008-9').textContent).toBe('1');
+
+  expect(getByTestId('S-8').textContent).toBe('');
+  expect(getByTestId('S-9').textContent).toBe('1');
+
+  expect(getByTestId('D-0').textContent).toBe('1');
+  expect(getByTestId('D-0-9').textContent).toBe('1');
+  expect(getByTestId('D-1').textContent).toBe('0');
+  expect(getByTestId('D-1-8').textContent).toBe('');
+  expect(getByTestId('D-1-9').textContent).toBe('');
+  expect(getByTestId('D-2').textContent).toBe('0');
+  expect(getByTestId('D-2-8').textContent).toBe('');
 });
 
 const levelsLong = [

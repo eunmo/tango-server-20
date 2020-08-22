@@ -8,8 +8,13 @@ import Fab from '@material-ui/core/Fab';
 import Grid from '@material-ui/core/Grid';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Paper from '@material-ui/core/Paper';
-import { deepOrange } from '@material-ui/core/colors';
-import { Refresh, ShowChart } from '@material-ui/icons';
+import { pink } from '@material-ui/core/colors';
+import {
+  EventAvailable,
+  EventBusy,
+  Refresh,
+  ShowChart,
+} from '@material-ui/icons';
 
 import { get } from './utils';
 
@@ -40,83 +45,32 @@ const useStyles = makeStyles({
   paperWithFab: {
     position: 'relative',
   },
-  fab: {
+  fabs: {
     position: 'absolute',
     bottom: '16px',
     right: '16px',
   },
+  fab: {
+    marginLeft: '16px',
+  },
 });
 
 const selected = {
-  backgroundColor: deepOrange[500],
+  backgroundColor: pink.A400,
 };
 
 export default () => {
   const [langs, setLangs] = useState([]);
-  const [parsed, setParsed] = useState({});
+  const [levels, setLevels] = useState([]);
   const [selectedLang, setSelectedLang] = useState('all');
+  const [filterToday, setFilterToday] = useState(false);
   const classes = useStyles();
 
   function fetch() {
     const tzOffset = new Date().getTimezoneOffset();
-    get(`/api/meta/${tzOffset}`, ({ langs: responseLangs, levels }) => {
-      const newDays = [];
-      const countBase = { E: 0, F: 0, J: 0, all: 0 };
-      for (let i = 0; i < 11; i += 1) {
-        newDays[i] = { day: i, streaks: [], sum: { ...countBase } };
-        for (let j = 0; j < 11 - i && j < 10; j += 1) {
-          newDays[i].streaks[j] = { streak: j, ...countBase };
-        }
-      }
-
-      const newSums = [];
-      for (let i = 0; i < 10; i += 1) {
-        newSums[i] = { streak: i, ...countBase };
-      }
-
-      const monthSet = {};
-      levels.forEach(({ level, summary }) => {
-        const lang = level.substring(0, 1);
-        const month = level.substring(1);
-        monthSet[month] = month;
-        summary.forEach(([streak, day, count]) => {
-          const index = streak === 0 ? 9 : 10 - streak;
-          newDays[day].streaks[index][lang] += count;
-          newDays[day].streaks[index].all += count;
-          newDays[day].sum[lang] += count;
-          newDays[day].sum.all += count;
-          newSums[index][lang] += count;
-          newSums[index].all += count;
-        });
-      });
-
-      let monthKeys = Object.keys(monthSet).sort();
-      if (monthKeys.length > 10) {
-        monthKeys = monthKeys.slice(-9);
-        monthKeys.unshift('Old');
-      }
-      const newMonths = monthKeys.map((month) => ({ month, streaks: [] }));
-      const monthMap = {};
-      for (let i = 0; i < newMonths.length; i += 1) {
-        const { month, streaks } = newMonths[i];
-        monthMap[month] = newMonths[i];
-        for (let j = 0; j < 10; j += 1) {
-          streaks[j] = { streak: j, ...countBase };
-        }
-      }
-
-      levels.forEach(({ level, summary }) => {
-        const lang = level.substring(0, 1);
-        const month = monthMap[level.substring(1)] ?? monthMap.Old;
-        summary.forEach(([streak, , count]) => {
-          const index = streak === 0 ? 9 : 10 - streak;
-          month.streaks[index][lang] += count;
-          month.streaks[index].all += count;
-        });
-      });
-
-      setParsed({ months: newMonths, days: newDays, sums: newSums });
-      setLangs(Object.entries(responseLangs).sort());
+    get(`/api/meta/${tzOffset}`, ({ langs: resLangs, levels: resLevels }) => {
+      setLangs(Object.entries(resLangs).sort());
+      setLevels(resLevels);
     });
   }
 
@@ -136,7 +90,57 @@ export default () => {
     return <LinearProgress />;
   }
 
-  const { months, days, sums } = parsed;
+  const days = [];
+  for (let i = 0; i < 11; i += 1) {
+    days[i] = { day: i, streaks: [], sum: 0 };
+    for (let j = 0; j < 11 - i && j < 10; j += 1) {
+      days[i].streaks[j] = { streak: j, sum: 0 };
+    }
+  }
+
+  const sums = [];
+  for (let i = 0; i < 10; i += 1) {
+    sums[i] = { streak: i, sum: 0 };
+  }
+
+  const monthSet = {};
+  levels.forEach(({ level }) => {
+    const month = level.substring(1);
+    monthSet[month] = month;
+  });
+
+  let monthKeys = Object.keys(monthSet).sort();
+  if (monthKeys.length > 10) {
+    monthKeys = monthKeys.slice(-9);
+    monthKeys.unshift('Old');
+  }
+  const months = monthKeys.map((month) => ({ month, streaks: [] }));
+  const monthMap = {};
+  for (let i = 0; i < months.length; i += 1) {
+    const { month, streaks } = months[i];
+    monthMap[month] = months[i];
+    for (let j = 0; j < 10; j += 1) {
+      streaks[j] = { streak: j, sum: 0 };
+    }
+  }
+
+  levels.forEach(({ level, summary }) => {
+    const lang = level.substring(0, 1);
+    if (selectedLang !== 'all' && lang !== selectedLang) {
+      return;
+    }
+    const month = monthMap[level.substring(1)] ?? monthMap.Old;
+    summary.forEach(([streak, day, count]) => {
+      if (filterToday && day !== 0) {
+        return;
+      }
+      const index = streak === 0 ? 9 : 10 - streak;
+      month.streaks[index].sum += count;
+      sums[index].sum += count;
+      days[day].streaks[index].sum += count;
+      days[day].sum += count;
+    });
+  });
 
   return (
     <>
@@ -188,7 +192,7 @@ export default () => {
                   className={classes.number}
                   data-testid={`M-${month}-${streak.streak}`}
                 >
-                  {streak[selectedLang] === 0 ? null : streak[selectedLang]}
+                  {streak.sum === 0 ? null : streak.sum}
                 </Grid>
               ))}
             </Grid>
@@ -205,9 +209,7 @@ export default () => {
                 className={classes.number}
                 data-testid={`S-${streak.streak}`}
               >
-                <b>
-                  {streak[selectedLang] === 0 ? null : streak[selectedLang]}
-                </b>
+                <b>{streak.sum === 0 ? null : streak.sum}</b>
               </Grid>
             ))}
           </Grid>
@@ -219,7 +221,7 @@ export default () => {
                 className={classes.number}
                 data-testid={`D-${day}`}
               >
-                <b>{sum[selectedLang]}</b>
+                <b>{sum}</b>
               </Grid>
               {streaks.map((streak) => (
                 <Grid
@@ -229,20 +231,30 @@ export default () => {
                   className={classes.number}
                   data-testid={`D-${day}-${streak.streak}`}
                 >
-                  {streak[selectedLang] === 0 ? null : streak[selectedLang]}
+                  {streak.sum === 0 ? null : streak.sum}
                 </Grid>
               ))}
             </Grid>
           ))}
         </Grid>
-        <Fab
-          color="primary"
-          aria-label="refresh"
-          className={classes.fab}
-          onClick={() => fetch()}
-        >
-          <Refresh />
-        </Fab>
+        <div className={classes.fabs}>
+          <Fab
+            color={filterToday ? 'secondary' : 'default'}
+            aria-label="today"
+            className={classes.fab}
+            onClick={() => setFilterToday(!filterToday)}
+          >
+            {filterToday ? <EventBusy /> : <EventAvailable />}
+          </Fab>
+          <Fab
+            color="primary"
+            aria-label="refresh"
+            className={classes.fab}
+            onClick={() => fetch()}
+          >
+            <Refresh />
+          </Fab>
+        </div>
       </Paper>
     </>
   );
