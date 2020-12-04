@@ -23,7 +23,7 @@ const add = async (level, word, yomigana, meaning) => {
 const edit = (level, index, word, yomigana, meaning) => {
   return dml(`
     UPDATE words
-       SET word='${word}', yomigana='${yomigana}', meaning='${meaning}'
+       SET word=${str(word)}, yomigana=${str(yomigana)}, meaning=${str(meaning)}
      WHERE level='${level}'
        AND \`index\`=${index}`);
 };

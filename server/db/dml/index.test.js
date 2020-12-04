@@ -87,8 +87,22 @@ test('empty sync', async () => {
   await sync([]);
 });
 
-test('insert one', async () => {
+test("insert one with '", async () => {
   await add('a', "b'c", '', '');
   const rows = await query('SELECT * FROM words');
   expect(rows.length).toBe(1);
+});
+
+test("insert then update one with '", async () => {
+  const level = 'a';
+  let [word, yomigana, meaning] = 'bcd'.split('');
+  await add(level, word, yomigana, meaning);
+  [word, yomigana, meaning] = ["a'b", "c'd", "e'f"];
+  await edit(level, 1, word, yomigana, meaning);
+  const rows = await query('SELECT * FROM words');
+  expect(rows.length).toBe(1);
+  const row = rows[0];
+  expect(row.word).toBe(word);
+  expect(row.yomigana).toBe(yomigana);
+  expect(row.meaning).toBe(meaning);
 });
