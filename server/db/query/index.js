@@ -1,4 +1,4 @@
-const { query } = require('@eunmo/mysql');
+const { query, queryOne } = require('@eunmo/mysql');
 
 const getNew = () => {
   return query('SELECT * FROM words WHERE lastCorrect IS NULL');
@@ -9,12 +9,14 @@ const getLearning = () => {
 };
 
 const getLearningInLevel = (level) => {
-  return query(`
-    SELECT *
-      FROM words
-     WHERE level='${level}'
-       AND streak < 11
-  ORDER BY level, \`index\``);
+  return query(
+    `SELECT *
+       FROM words
+      WHERE level = ?
+        AND streak < 11
+   ORDER BY level, \`index\``,
+    level
+  );
 };
 
 const getLangSummary = async () => {
@@ -47,12 +49,14 @@ const getMatch = async (patterns) => {
 };
 
 const getWord = async (level, index) => {
-  const rows = await query(`
-    SELECT word, meaning, yomigana
-      FROM words
-     WHERE level='${level}'
-       AND \`index\`=${index}`);
-  return rows[0] ?? {};
+  const row = await queryOne(
+    `SELECT word, meaning, yomigana
+       FROM words
+      WHERE level = ?
+        AND \`index\` = ?`,
+    [level, index]
+  );
+  return row ?? {};
 };
 
 module.exports = {

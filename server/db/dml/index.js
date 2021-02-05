@@ -1,38 +1,37 @@
-const { dml, query } = require('@eunmo/mysql');
+const { dml, insertMultiple, queryOne } = require('@eunmo/mysql');
 
-const str = (string) => `"${string}"`;
 function formatDate(date) {
   const time = new Date(date);
   return time.toISOString().slice(0, 19).replace('T', ' ');
 }
 
 const add = async (level, word, yomigana, meaning) => {
-  const rows = await query(`
-    SELECT COALESCE(MAX(\`index\`),0) + 1 as newid
-      FROM words
-     WHERE level="${level}"`);
-  const { newid } = rows[0];
+  const { newid } = await queryOne(
+    `SELECT COALESCE(MAX(\`index\`),0) + 1 as newid
+       FROM words
+      WHERE level = ?`,
+    level
+  );
 
-  const value = [str(level), newid, str(word), str(yomigana), str(meaning)];
-
-  return dml(`
-    INSERT INTO words (level, \`index\`, word, yomigana, meaning)
-         VALUES (${value.join(',')})`);
+  return insertMultiple(
+    'INSERT INTO words (level, `index`, word, yomigana, meaning) VALUES ?',
+    [[level, newid, word, yomigana, meaning]]
+  );
 };
 
 const edit = (level, index, word, yomigana, meaning) => {
-  return dml(`
-    UPDATE words
-       SET word=${str(word)}, yomigana=${str(yomigana)}, meaning=${str(meaning)}
-     WHERE level='${level}'
-       AND \`index\`=${index}`);
+  return dml(
+    `UPDATE words
+        SET word = ?, yomigana = ?, meaning = ?
+      WHERE level = ?
+        AND \`index\`= ?`,
+    [word, yomigana, meaning, level, index]
+  );
 };
 
 const remove = (level, index) => {
-  return dml(`
-    DELETE FROM words
-          WHERE level='${level}'
-            AND \`index\`=${index}`);
+  const values = [level, index];
+  return dml('DELETE FROM words WHERE level = ? AND `index` = ?', values);
 };
 
 const sync = (words) => {
