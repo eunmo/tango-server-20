@@ -1,4 +1,4 @@
-const { dml, insertMultiple, queryOne } = require('@eunmo/mysql');
+const { dml, queryOne } = require('@eunmo/mysql');
 
 function formatDate(date) {
   const time = new Date(date);
@@ -13,8 +13,8 @@ const add = async (level, word, yomigana, meaning) => {
     level
   );
 
-  return insertMultiple(
-    'INSERT INTO words (level, `index`, word, yomigana, meaning) VALUES ?',
+  return dml(
+    'INSERT INTO words (level, `index`, word, yomigana, meaning) VALUES (?)',
     [[level, newid, word, yomigana, meaning]]
   );
 };
