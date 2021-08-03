@@ -2,13 +2,7 @@ const request = require('supertest');
 const { dml, cleanup } = require('@eunmo/mysql');
 const app = require('../../app');
 
-beforeAll(async () => {
-  await dml('DROP TABLE IF EXISTS words;');
-  await dml('CREATE TABLE words LIKE tango.words;');
-});
-
 afterAll(async () => {
-  await dml('DROP TABLE IF EXISTS words;');
   await cleanup();
 });
 

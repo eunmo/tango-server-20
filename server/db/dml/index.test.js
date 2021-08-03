@@ -1,13 +1,7 @@
 const { dml, query, cleanup } = require('@eunmo/mysql');
 const { add, edit, remove, sync } = require('.');
 
-beforeAll(async () => {
-  await dml('DROP TABLE IF EXISTS words;');
-  await dml('CREATE TABLE words LIKE tango.words;');
-});
-
 afterAll(async () => {
-  await dml('DROP TABLE IF EXISTS words;');
   await cleanup();
 });
 
