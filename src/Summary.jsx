@@ -145,7 +145,7 @@ export default function Summary() {
         variant="outlined"
         sx={{ py: 1, pr: 1, position: 'relative', textAlign: 'right' }}
       >
-        <Grid container spacing={1}>
+        <Grid container>
           {months.map(({ month, streaks }) => (
             <Grid key={month} container item xs={12} spacing={1}>
               <Grid item xs={2}>
