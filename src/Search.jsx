@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
@@ -9,28 +8,10 @@ import { Clear, Search as SearchIcon } from '@mui/icons-material';
 import Words from './Words';
 import { get, sortWordsByPattern } from './utils';
 
-const useStyles = makeStyles({
-  root: {
-    padding: '2px 4px',
-    display: 'flex',
-    flexGrow: 1,
-  },
-  input: {
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  header: {
-    margin: '16px 0 16px 16px',
-  },
-});
-
 export default function Search({ initialValue, onChange = () => {} }) {
   const [keyword, setKeyword] = useState('');
   const [words, setWords] = useState([]);
   const [patterns, setPatterns] = useState(null);
-  const classes = useStyles();
 
   const search = (query) => {
     if (query !== '') {
@@ -69,26 +50,26 @@ export default function Search({ initialValue, onChange = () => {} }) {
       <Paper
         component="form"
         variant="outlined"
-        className={classes.root}
+        sx={{ p: 0.5, display: 'flex', flexGrow: 1 }}
         onSubmit={(e) => submit(e)}
       >
         <IconButton
           type="submit"
-          className={classes.iconButton}
+          sx={{ p: 1 }}
           aria-label="search"
           size="large"
         >
           <SearchIcon />
         </IconButton>
         <InputBase
-          className={classes.input}
+          sx={{ flex: 1 }}
           placeholder="Search Tango"
           value={keyword}
           onChange={({ target }) => setKeyword(target.value)}
           inputProps={{ 'aria-label': 'search tango' }}
         />
         <IconButton
-          className={classes.iconButton}
+          sx={{ padding: 1 }}
           aria-label="clear search"
           onClick={clear}
           size="large"
@@ -97,7 +78,7 @@ export default function Search({ initialValue, onChange = () => {} }) {
         </IconButton>
       </Paper>
       {patterns && (
-        <Typography variant="h6" className={classes.header}>
+        <Typography variant="h6" m={2}>
           Search Result for: {patterns.join(', ')}
         </Typography>
       )}

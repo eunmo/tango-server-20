@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import makeStyles from '@mui/styles/makeStyles';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -8,25 +8,11 @@ import Typography from '@mui/material/Typography';
 
 import { get, put, fetchDelete } from './utils';
 
-const useStyles = makeStyles({
-  header: {
-    margin: '16px 0px',
-  },
-  buttons: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  button: {
-    marginTop: '24px',
-  },
-});
-
 export default function Edit() {
   const { level, index } = useParams();
   const [word, setWord] = useState('');
   const [yomigana, setYomigana] = useState('');
   const [meaning, setMeaning] = useState('');
-  const classes = useStyles();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,7 +60,7 @@ export default function Edit() {
 
   return (
     <>
-      <Typography variant="h5" className={classes.header}>
+      <Typography variant="h5" mb={2}>
         {`Edit ${level}: ${index}`}
       </Typography>
       <Grid container spacing={2}>
@@ -106,11 +92,10 @@ export default function Edit() {
           />
         </Grid>
       </Grid>
-      <div className={classes.buttons}>
+      <Box display="flex" justifyContent="space-between" mt={3}>
         <Button
           variant="contained"
           color="primary"
-          className={classes.button}
           onClick={edit}
           aria-label="edit"
         >
@@ -119,13 +104,12 @@ export default function Edit() {
         <Button
           variant="contained"
           color="secondary"
-          className={classes.button}
           onClick={remove}
           aria-label="remove"
         >
           remove
         </Button>
-      </div>
+      </Box>
     </>
   );
 }

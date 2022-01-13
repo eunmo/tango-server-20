@@ -1,21 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import makeStyles from '@mui/styles/makeStyles';
 import MuiAppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Add, Details, Search } from '@mui/icons-material';
-
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-    marginBottom: '16px',
-  },
-  title: {
-    flexGrow: 1,
-  },
-});
 
 const getIconButton = (name, icon) => (
   <IconButton
@@ -30,29 +20,25 @@ const getIconButton = (name, icon) => (
 );
 
 export default function AppBar() {
-  const classes = useStyles();
   const navigate = useNavigate();
 
   if (window.isWebkit) {
     window.wkLink = (url) => {
       navigate(url);
     };
-    return <div className={classes.root} />;
+    return <Box mb={2} />;
   }
 
   return (
-    <div className={classes.root}>
-      <MuiAppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Tango
-          </Typography>
-          <div className={classes.grow} />
-          {getIconButton('search', <Search />)}
-          {getIconButton('add', <Add />)}
-          {getIconButton('summary', <Details />)}
-        </Toolbar>
-      </MuiAppBar>
-    </div>
+    <MuiAppBar position="static" sx={{ mb: 2 }}>
+      <Toolbar>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          Tango
+        </Typography>
+        {getIconButton('search', <Search />)}
+        {getIconButton('add', <Add />)}
+        {getIconButton('summary', <Details />)}
+      </Toolbar>
+    </MuiAppBar>
   );
 }

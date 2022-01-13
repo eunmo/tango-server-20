@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import makeStyles from '@mui/styles/makeStyles';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -8,18 +8,6 @@ import { ArrowDownward, ArrowUpward, Clear } from '@mui/icons-material';
 
 import Search from './Search';
 import { post, getYYMM } from './utils';
-
-const useStyles = makeStyles({
-  buttons: {
-    display: 'flex',
-  },
-  buttonSearch: {
-    margin: '16px 8px 16px 0',
-  },
-  buttonSubmit: {
-    margin: '24px 8px 0 0',
-  },
-});
 
 const languages = [
   { key: 'E', emoji: '🇬🇧' },
@@ -34,7 +22,6 @@ export default function Add() {
   const [meaning, setMeaning] = useState('');
   const [keywordTo, setKeywordTo] = useState({});
   const [keywordFrom, setKeywordFrom] = useState('');
-  const classes = useStyles();
   const navigate = useNavigate();
 
   const updateWord = (newValue) => {
@@ -114,10 +101,10 @@ export default function Add() {
   return (
     <>
       <Search initialValue={keywordTo} onChange={setKeywordFrom} />
-      <div className={classes.buttons}>
+      <Box display="flex">
         <Button
           variant="contained"
-          className={classes.buttonSearch}
+          sx={{ my: 2, mr: 1 }}
           onClick={toSearch}
           aria-label="to search"
         >
@@ -125,7 +112,7 @@ export default function Add() {
         </Button>
         <Button
           variant="contained"
-          className={classes.buttonSearch}
+          sx={{ my: 2, mr: 1 }}
           onClick={fromSearch}
           aria-label="from search"
         >
@@ -133,13 +120,13 @@ export default function Add() {
         </Button>
         <Button
           variant="contained"
-          className={classes.buttonSearch}
+          sx={{ my: 2, mr: 1 }}
           onClick={clearAll}
           aria-label="clear all"
         >
           <Clear />
         </Button>
-      </div>
+      </Box>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <TextField
@@ -169,19 +156,19 @@ export default function Add() {
           />
         </Grid>
       </Grid>
-      <div className={classes.buttons}>
+      <Box display="flex">
         {languages.map(({ key, emoji }) => (
           <Button
             key={key}
             variant="contained"
-            className={classes.buttonSubmit}
+            sx={{ mt: 3, mr: 1 }}
             onClick={() => add(key)}
             aria-label={`add ${key}`}
           >
             {emoji}
           </Button>
         ))}
-      </div>
+      </Box>
     </>
   );
 }

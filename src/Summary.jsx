@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -18,53 +18,23 @@ import {
 
 import { get } from './utils';
 
-const useStyles = makeStyles({
-  cardAction: {
-    width: '100%',
-    display: 'block',
-    textAlign: 'initial',
-  },
-  cardHeader: {
-    padding: '8px',
-  },
-  avatar: {
-    margin: '0 8px 0 0',
-  },
-  paper: {
-    marginTop: '8px',
-    padding: '8px 0',
-  },
-  number: {
-    textAlign: 'right',
-  },
-  icon: {
-    textAlign: 'right',
-    paddingTop: '2px !important',
-    height: '28px',
-  },
-  paperWithFab: {
-    position: 'relative',
-  },
-  fabs: {
-    position: 'absolute',
-    bottom: '16px',
-    right: '16px',
-  },
-  fab: {
-    marginLeft: '16px',
-  },
-});
-
 const selected = {
   backgroundColor: pink.A400,
 };
+
+function Streaks({ streaks, dataPrefix }) {
+  return streaks.map(({ streak, sum }) => (
+    <Grid key={streak} item xs={1} data-testid={`${dataPrefix}-${streak}`}>
+      {sum === 0 ? null : sum}
+    </Grid>
+  ));
+}
 
 export default function Summary() {
   const [langs, setLangs] = useState([]);
   const [levels, setLevels] = useState([]);
   const [selectedLang, setSelectedLang] = useState('all');
   const [filterToday, setFilterToday] = useState(false);
-  const classes = useStyles();
 
   function fetch() {
     const tzOffset = new Date().getTimezoneOffset();
@@ -144,20 +114,17 @@ export default function Summary() {
 
   return (
     <>
-      <Grid container spacing={1}>
+      <Grid container spacing={1} mb={1}>
         {langs.map(([lang, summary]) => (
           <Grid item key={lang} xs={4}>
             <Card variant="outlined">
               <ButtonBase
-                className={classes.cardAction}
+                sx={{ width: '100%', display: 'block', textAlign: 'initial' }}
                 onClick={() => filterByLang(lang)}
                 aria-label={lang}
               >
                 <CardHeader
-                  classes={{
-                    root: classes.cardHeader,
-                    avatar: classes.avatar,
-                  }}
+                  sx={{ p: 1, '& .MuiCardHeader-avatar': { mr: 1 } }}
                   avatar={
                     <Avatar
                       style={selectedLang === lang ? selected : {}}
@@ -176,85 +143,45 @@ export default function Summary() {
       </Grid>
       <Paper
         variant="outlined"
-        className={`${classes.paper} ${classes.paperWithFab}`}
+        sx={{ py: 1, pr: 1, position: 'relative', textAlign: 'right' }}
       >
         <Grid container spacing={1}>
           {months.map(({ month, streaks }) => (
             <Grid key={month} container item xs={12} spacing={1}>
-              <Grid item xs={2} className={classes.number}>
+              <Grid item xs={2}>
                 <b>{month}</b>
               </Grid>
-              {streaks.map((streak) => (
-                <Grid
-                  key={streak.streak}
-                  item
-                  xs={1}
-                  className={classes.number}
-                  data-testid={`M-${month}-${streak.streak}`}
-                >
-                  {streak.sum === 0 ? null : streak.sum}
-                </Grid>
-              ))}
+              <Streaks streaks={streaks} dataPrefix={`M-${month}`} />
             </Grid>
           ))}
-          <Grid container item xs={12} spacing={1}>
-            <Grid item xs={2} className={classes.icon}>
+          <Grid container item xs={12} spacing={1} sx={{ fontWeight: 'bold' }}>
+            <Grid item xs={2} sx={{ height: '28px' }}>
               <ShowChart />
             </Grid>
-            {sums.map((streak) => (
-              <Grid
-                key={streak.streak}
-                item
-                xs={1}
-                className={classes.number}
-                data-testid={`S-${streak.streak}`}
-              >
-                <b>{streak.sum === 0 ? null : streak.sum}</b>
-              </Grid>
-            ))}
+            <Streaks streaks={sums} dataPrefix="S" />
           </Grid>
           {days.map(({ day, streaks, sum }) => (
             <Grid key={day} container item xs={12} spacing={1}>
-              <Grid
-                item
-                xs={2}
-                className={classes.number}
-                data-testid={`D-${day}`}
-              >
+              <Grid item xs={2} data-testid={`D-${day}`}>
                 <b>{sum}</b>
               </Grid>
-              {streaks.map((streak) => (
-                <Grid
-                  key={streak.streak}
-                  item
-                  xs={1}
-                  className={classes.number}
-                  data-testid={`D-${day}-${streak.streak}`}
-                >
-                  {streak.sum === 0 ? null : streak.sum}
-                </Grid>
-              ))}
+              <Streaks streaks={streaks} dataPrefix={`D-${day}`} />
             </Grid>
           ))}
         </Grid>
-        <div className={classes.fabs}>
+        <Box sx={{ position: 'absolute', bottom: '16px', right: '16px' }}>
           <Fab
             color={filterToday ? 'secondary' : 'default'}
             aria-label="today"
-            className={classes.fab}
+            sx={{ mr: 2 }}
             onClick={() => setFilterToday(!filterToday)}
           >
             {filterToday ? <EventBusy /> : <EventAvailable />}
           </Fab>
-          <Fab
-            color="primary"
-            aria-label="refresh"
-            className={classes.fab}
-            onClick={() => fetch()}
-          >
+          <Fab color="primary" aria-label="refresh" onClick={() => fetch()}>
             <Refresh />
           </Fab>
-        </div>
+        </Box>
       </Paper>
     </>
   );
