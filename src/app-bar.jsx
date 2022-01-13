@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import IconButton from '@material-ui/core/IconButton';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { Add, Details, Search } from '@material-ui/icons';
+import makeStyles from '@mui/styles/makeStyles';
+import AppBar from '@mui/material/AppBar';
+import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { Add, Details, Search } from '@mui/icons-material';
 
 const useStyles = makeStyles({
   root: {
@@ -23,7 +23,7 @@ const getIconButton = (name, icon) => (
     color="inherit"
     component={Link}
     to={`/${name}`}
-  >
+    size="large">
     {icon}
   </IconButton>
 );

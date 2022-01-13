@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import Fab from '@material-ui/core/Fab';
-import Grid from '@material-ui/core/Grid';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Paper from '@material-ui/core/Paper';
-import { pink } from '@material-ui/core/colors';
+import makeStyles from '@mui/styles/makeStyles';
+import Avatar from '@mui/material/Avatar';
+import ButtonBase from '@mui/material/ButtonBase';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import Fab from '@mui/material/Fab';
+import Grid from '@mui/material/Grid';
+import LinearProgress from '@mui/material/LinearProgress';
+import Paper from '@mui/material/Paper';
+import { pink } from '@mui/material/colors';
 import {
   EventAvailable,
   EventBusy,
   Refresh,
   ShowChart,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 import { get } from './utils';
 

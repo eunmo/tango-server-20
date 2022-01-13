@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import { Clear, Search } from '@material-ui/icons';
+import makeStyles from '@mui/styles/makeStyles';
+import InputBase from '@mui/material/InputBase';
+import IconButton from '@mui/material/IconButton';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import { Clear, Search } from '@mui/icons-material';
 
 import Words from './words';
 import { get, sortWordsByPattern } from './utils';
@@ -64,42 +64,40 @@ export default ({ initialValue, onChange = () => {} }) => {
     setPatterns(null);
   };
 
-  return (
-    <>
-      <Paper
-        component="form"
-        variant="outlined"
-        className={classes.root}
-        onSubmit={(e) => submit(e)}
-      >
-        <IconButton
-          type="submit"
-          className={classes.iconButton}
-          aria-label="search"
-        >
-          <Search />
-        </IconButton>
-        <InputBase
-          className={classes.input}
-          placeholder="Search Tango"
-          value={keyword}
-          onChange={({ target }) => setKeyword(target.value)}
-          inputProps={{ 'aria-label': 'search tango' }}
-        />
-        <IconButton
-          className={classes.iconButton}
-          aria-label="clear search"
-          onClick={clear}
-        >
-          <Clear />
-        </IconButton>
-      </Paper>
-      {patterns && (
-        <Typography variant="h6" className={classes.header}>
-          Search Result for: {patterns.join(', ')}
-        </Typography>
-      )}
-      {words.length > 0 && <Words words={words} />}
-    </>
-  );
+  return <>
+    <Paper
+      component="form"
+      variant="outlined"
+      className={classes.root}
+      onSubmit={(e) => submit(e)}
+    >
+      <IconButton
+        type="submit"
+        className={classes.iconButton}
+        aria-label="search"
+        size="large">
+        <Search />
+      </IconButton>
+      <InputBase
+        className={classes.input}
+        placeholder="Search Tango"
+        value={keyword}
+        onChange={({ target }) => setKeyword(target.value)}
+        inputProps={{ 'aria-label': 'search tango' }}
+      />
+      <IconButton
+        className={classes.iconButton}
+        aria-label="clear search"
+        onClick={clear}
+        size="large">
+        <Clear />
+      </IconButton>
+    </Paper>
+    {patterns && (
+      <Typography variant="h6" className={classes.header}>
+        Search Result for: {patterns.join(', ')}
+      </Typography>
+    )}
+    {words.length > 0 && <Words words={words} />}
+  </>;
 };
