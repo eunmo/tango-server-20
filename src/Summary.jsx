@@ -22,6 +22,8 @@ const selected = {
   backgroundColor: pink.A400,
 };
 
+const oldMonthLimit = 13;
+
 function Streaks({ streaks, dataPrefix }) {
   return streaks.map(({ streak, sum }) => (
     <Grid key={streak} item xs={1} data-testid={`${dataPrefix}-${streak}`}>
@@ -80,8 +82,8 @@ export default function Summary() {
   });
 
   let monthKeys = Object.keys(monthSet).sort();
-  if (monthKeys.length > 10) {
-    monthKeys = monthKeys.slice(-9);
+  if (monthKeys.length > oldMonthLimit) {
+    monthKeys = monthKeys.slice(1 - oldMonthLimit);
     monthKeys.unshift('Old');
   }
   const months = monthKeys.map((month) => ({ month, streaks: [] }));
