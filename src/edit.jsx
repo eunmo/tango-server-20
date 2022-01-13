@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function () {
+export default function Edit() {
   const { level, index } = useParams();
   const [word, setWord] = useState('');
   const [yomigana, setYomigana] = useState('');

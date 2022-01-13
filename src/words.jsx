@@ -96,7 +96,7 @@ function SmUp({ words }) {
   );
 }
 
-export default function ({ words }) {
+export default function Words({ words }) {
   return (
     <TableContainer component={Paper} variant="outlined">
       <Hidden smDown>

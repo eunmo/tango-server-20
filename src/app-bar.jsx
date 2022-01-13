@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import makeStyles from '@mui/styles/makeStyles';
-import AppBar from '@mui/material/AppBar';
+import MuiAppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -29,7 +29,7 @@ const getIconButton = (name, icon) => (
   </IconButton>
 );
 
-export default function () {
+export default function AppBar() {
   const classes = useStyles();
   const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ export default function () {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <MuiAppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             Tango
@@ -52,7 +52,7 @@ export default function () {
           {getIconButton('add', <Add />)}
           {getIconButton('summary', <Details />)}
         </Toolbar>
-      </AppBar>
+      </MuiAppBar>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import Search from './search';
 
-export default function () {
+export default function SearchRoute() {
   const { keyword = '' } = useParams();
   const [initialValue, setInitialValue] = useState({});
 

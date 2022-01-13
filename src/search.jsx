@@ -4,7 +4,7 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { Clear, Search } from '@mui/icons-material';
+import { Clear, SearchIcon } from '@mui/icons-material';
 
 import Words from './words';
 import { get, sortWordsByPattern } from './utils';
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ({ initialValue, onChange = () => {} }) {
+export default function Search({ initialValue, onChange = () => {} }) {
   const [keyword, setKeyword] = useState('');
   const [words, setWords] = useState([]);
   const [patterns, setPatterns] = useState(null);
@@ -78,7 +78,7 @@ export default function ({ initialValue, onChange = () => {} }) {
           aria-label="search"
           size="large"
         >
-          <Search />
+          <SearchIcon />
         </IconButton>
         <InputBase
           className={classes.input}

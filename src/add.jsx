@@ -27,7 +27,7 @@ const languages = [
   { key: 'J', emoji: '🇯🇵' },
 ];
 
-export default function () {
+export default function Add() {
   const [yymm] = useState(getYYMM());
   const [word, setWord] = useState('');
   const [yomigana, setYomigana] = useState('');

@@ -16,7 +16,7 @@ import Edit from './edit';
 import Add from './add';
 import Summary from './summary';
 
-export default function () {
+export default function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const theme = React.useMemo(
