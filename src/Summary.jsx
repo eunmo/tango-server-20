@@ -151,7 +151,8 @@ export default function Summary() {
           {months.map(({ month, streaks }) => (
             <Grid key={month} container item xs={12} spacing={1}>
               <Grid item xs={2}>
-                <b>{month}</b>
+                {month.substring(0, 2)}
+                <b>{month.substring(2, 4)}</b>
               </Grid>
               <Streaks streaks={streaks} dataPrefix={`M-${month}`} />
             </Grid>
