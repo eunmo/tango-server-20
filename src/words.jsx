@@ -27,71 +27,76 @@ const editButton = (level, index) => (
     aria-label="edit word"
     component={Link}
     to={`/edit/${level}/${index}`}
-    size="large">
+    size="large"
+  >
     <Edit />
   </IconButton>
 );
 
-const XsDown = ({ words }) => (
-  <Table aria-label="search results">
-    <TableHead>
-      <TableRow>
-        <BoldCell>Level</BoldCell>
-        <BoldCell>Index</BoldCell>
-        <BoldCell>Streak</BoldCell>
-        <BoldCell>Word</BoldCell>
-        <BoldCell>Yomigana</BoldCell>
-        <BoldCell>Meaning</BoldCell>
-        <TableCell />
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {words.map(({ level, index, streak, word, yomigana, meaning }) => (
-        <TableRow key={level + index}>
-          <TableCell aria-label="level">{chip(level, streak)}</TableCell>
-          <TableCell>{index}</TableCell>
-          <TableCell>{streak}</TableCell>
-          <TableCell>{word}</TableCell>
-          <TableCell>{yomigana}</TableCell>
-          <TableCell>{meaning}</TableCell>
-          <TableCell style={{ padding: '6px' }}>
-            {editButton(level, index)}
-          </TableCell>
+function XsDown({ words }) {
+  return (
+    <Table aria-label="search results">
+      <TableHead>
+        <TableRow>
+          <BoldCell>Level</BoldCell>
+          <BoldCell>Index</BoldCell>
+          <BoldCell>Streak</BoldCell>
+          <BoldCell>Word</BoldCell>
+          <BoldCell>Yomigana</BoldCell>
+          <BoldCell>Meaning</BoldCell>
+          <TableCell />
         </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-);
+      </TableHead>
+      <TableBody>
+        {words.map(({ level, index, streak, word, yomigana, meaning }) => (
+          <TableRow key={level + index}>
+            <TableCell aria-label="level">{chip(level, streak)}</TableCell>
+            <TableCell>{index}</TableCell>
+            <TableCell>{streak}</TableCell>
+            <TableCell>{word}</TableCell>
+            <TableCell>{yomigana}</TableCell>
+            <TableCell>{meaning}</TableCell>
+            <TableCell style={{ padding: '6px' }}>
+              {editButton(level, index)}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
 
 const ThinCell = styled(TableCell)({
   padding: '6px 0px 6px 8px',
 });
 
-const SmUp = ({ words }) => (
-  <Table size="small" aria-label="search results">
-    <TableBody>
-      {words.map(({ level, index, streak, word, yomigana, meaning }) => (
-        <TableRow key={level + index}>
-          <ThinCell>{chip(level, streak)}</ThinCell>
-          <ThinCell style={{ width: '100%' }}>
-            <Typography variant="body2" color="textSecondary">
-              {yomigana}
-            </Typography>
-            <Typography variant="body2">{word}</Typography>
-            <Typography variant="body2" color="textSecondary">
-              {meaning}
-            </Typography>
-          </ThinCell>
-          <ThinCell style={{ padding: '6px' }}>
-            {editButton(level, index)}
-          </ThinCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-);
+function SmUp({ words }) {
+  return (
+    <Table size="small" aria-label="search results">
+      <TableBody>
+        {words.map(({ level, index, streak, word, yomigana, meaning }) => (
+          <TableRow key={level + index}>
+            <ThinCell>{chip(level, streak)}</ThinCell>
+            <ThinCell style={{ width: '100%' }}>
+              <Typography variant="body2" color="textSecondary">
+                {yomigana}
+              </Typography>
+              <Typography variant="body2">{word}</Typography>
+              <Typography variant="body2" color="textSecondary">
+                {meaning}
+              </Typography>
+            </ThinCell>
+            <ThinCell style={{ padding: '6px' }}>
+              {editButton(level, index)}
+            </ThinCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
 
-export default ({ words }) => {
+export default function ({ words }) {
   return (
     <TableContainer component={Paper} variant="outlined">
       <Hidden smDown>
@@ -102,4 +107,4 @@ export default ({ words }) => {
       </Hidden>
     </TableContainer>
   );
-};
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import makeStyles from '@mui/styles/makeStyles';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -21,13 +21,13 @@ const useStyles = makeStyles({
   },
 });
 
-export default () => {
+export default function () {
   const { level, index } = useParams();
-  const history = useHistory();
   const [word, setWord] = useState('');
   const [yomigana, setYomigana] = useState('');
   const [meaning, setMeaning] = useState('');
   const classes = useStyles();
+  const navigate = useNavigate();
 
   useEffect(() => {
     get(`/api/select/${level}/${index}`, (data) => {
@@ -61,14 +61,14 @@ export default () => {
         meaning: meaning.trim(),
       },
       () => {
-        history.push(`/search/${word.trim()}`);
+        navigate(`/search/${word.trim()}`);
       }
     );
   };
 
   const remove = () => {
     fetchDelete('/api/crud', { level, index }, () => {
-      history.push(`/search/${word.trim()}`);
+      navigate(`/search/${word.trim()}`);
     });
   };
 
@@ -128,4 +128,4 @@ export default () => {
       </div>
     </>
   );
-};
+}

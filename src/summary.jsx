@@ -59,7 +59,7 @@ const selected = {
   backgroundColor: pink.A400,
 };
 
-export default () => {
+export default function () {
   const [langs, setLangs] = useState([]);
   const [levels, setLevels] = useState([]);
   const [selectedLang, setSelectedLang] = useState('all');
@@ -258,4 +258,4 @@ export default () => {
       </Paper>
     </>
   );
-};
+}

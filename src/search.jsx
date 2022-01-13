@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({ initialValue, onChange = () => {} }) => {
+export default function ({ initialValue, onChange = () => {} }) {
   const [keyword, setKeyword] = useState('');
   const [words, setWords] = useState([]);
   const [patterns, setPatterns] = useState(null);
@@ -64,40 +64,44 @@ export default ({ initialValue, onChange = () => {} }) => {
     setPatterns(null);
   };
 
-  return <>
-    <Paper
-      component="form"
-      variant="outlined"
-      className={classes.root}
-      onSubmit={(e) => submit(e)}
-    >
-      <IconButton
-        type="submit"
-        className={classes.iconButton}
-        aria-label="search"
-        size="large">
-        <Search />
-      </IconButton>
-      <InputBase
-        className={classes.input}
-        placeholder="Search Tango"
-        value={keyword}
-        onChange={({ target }) => setKeyword(target.value)}
-        inputProps={{ 'aria-label': 'search tango' }}
-      />
-      <IconButton
-        className={classes.iconButton}
-        aria-label="clear search"
-        onClick={clear}
-        size="large">
-        <Clear />
-      </IconButton>
-    </Paper>
-    {patterns && (
-      <Typography variant="h6" className={classes.header}>
-        Search Result for: {patterns.join(', ')}
-      </Typography>
-    )}
-    {words.length > 0 && <Words words={words} />}
-  </>;
-};
+  return (
+    <>
+      <Paper
+        component="form"
+        variant="outlined"
+        className={classes.root}
+        onSubmit={(e) => submit(e)}
+      >
+        <IconButton
+          type="submit"
+          className={classes.iconButton}
+          aria-label="search"
+          size="large"
+        >
+          <Search />
+        </IconButton>
+        <InputBase
+          className={classes.input}
+          placeholder="Search Tango"
+          value={keyword}
+          onChange={({ target }) => setKeyword(target.value)}
+          inputProps={{ 'aria-label': 'search tango' }}
+        />
+        <IconButton
+          className={classes.iconButton}
+          aria-label="clear search"
+          onClick={clear}
+          size="large"
+        >
+          <Clear />
+        </IconButton>
+      </Paper>
+      {patterns && (
+        <Typography variant="h6" className={classes.header}>
+          Search Result for: {patterns.join(', ')}
+        </Typography>
+      )}
+      {words.length > 0 && <Words words={words} />}
+    </>
+  );
+}

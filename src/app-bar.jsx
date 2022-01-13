@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import makeStyles from '@mui/styles/makeStyles';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
@@ -23,18 +23,19 @@ const getIconButton = (name, icon) => (
     color="inherit"
     component={Link}
     to={`/${name}`}
-    size="large">
+    size="large"
+  >
     {icon}
   </IconButton>
 );
 
-export default () => {
+export default function () {
   const classes = useStyles();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   if (window.isWebkit) {
     window.wkLink = (url) => {
-      history.push(url);
+      navigate(url);
     };
     return <div className={classes.root} />;
   }
@@ -54,4 +55,4 @@ export default () => {
       </AppBar>
     </div>
   );
-};
+}

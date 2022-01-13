@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import makeStyles from '@mui/styles/makeStyles';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -27,8 +27,7 @@ const languages = [
   { key: 'J', emoji: '🇯🇵' },
 ];
 
-export default () => {
-  const history = useHistory();
+export default function () {
   const [yymm] = useState(getYYMM());
   const [word, setWord] = useState('');
   const [yomigana, setYomigana] = useState('');
@@ -36,6 +35,7 @@ export default () => {
   const [keywordTo, setKeywordTo] = useState({});
   const [keywordFrom, setKeywordFrom] = useState('');
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const updateWord = (newValue) => {
     let [newWord, newYomigana] = [newValue.replace('’', "'"), null];
@@ -87,7 +87,7 @@ export default () => {
         meaning: meaning.trim(),
       },
       () => {
-        history.push(`/search/${word.trim()}`);
+        navigate(`/search/${word.trim()}`);
       }
     );
   };
@@ -184,4 +184,4 @@ export default () => {
       </div>
     </>
   );
-};
+}
