@@ -4,9 +4,9 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { Clear, SearchIcon } from '@mui/icons-material';
+import { Clear, Search as SearchIcon } from '@mui/icons-material';
 
-import Words from './words';
+import Words from './Words';
 import { get, sortWordsByPattern } from './utils';
 
 const useStyles = makeStyles({

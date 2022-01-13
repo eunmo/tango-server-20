@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import { ArrowDownward, ArrowUpward, Clear } from '@mui/icons-material';
 
-import Search from './search';
+import Search from './Search';
 import { post, getYYMM } from './utils';
 
 const useStyles = makeStyles({

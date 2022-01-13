@@ -1,7 +1,8 @@
 import React from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { act, render, fireEvent, screen } from '@testing-library/react';
-import Add from '../add';
+
+import Add from '../Add';
 import { getYYMM } from '../utils';
 
 let optionBody = null;

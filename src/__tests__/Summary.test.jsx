@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, render, fireEvent, screen } from '@testing-library/react';
 
-import Summary from '../summary';
+import Summary from '../Summary';
 
 const langs = {
   E: { learning: 1, learned: 10, fresh: 0 },

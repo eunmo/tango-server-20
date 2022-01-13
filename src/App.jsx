@@ -10,11 +10,11 @@ import {
 } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
-import AppBar from './app-bar';
-import Search from './searchRoute';
-import Edit from './edit';
-import Add from './add';
-import Summary from './summary';
+import AppBar from './AppBar';
+import Search from './SearchRoute';
+import Edit from './Edit';
+import Add from './Add';
+import Summary from './Summary';
 
 export default function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');

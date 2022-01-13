@@ -1,7 +1,8 @@
 import React from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { act, render, fireEvent, screen } from '@testing-library/react';
-import Edit from '../edit';
+
+import Edit from '../Edit';
 
 const e = { word: 'a', yomigana: '', meaning: 'c' };
 const f = { word: 'd', yomigana: 'e', meaning: 'f' };

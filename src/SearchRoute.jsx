@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import Search from './search';
+import Search from './Search';
 
 export default function SearchRoute() {
   const { keyword = '' } = useParams();

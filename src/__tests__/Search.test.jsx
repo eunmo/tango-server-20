@@ -1,7 +1,8 @@
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { act, render, fireEvent } from '@testing-library/react';
-import Search from '../searchRoute';
+
+import Search from '../SearchRoute';
 import words from './words';
 import createMatchMedia from './createMatchMedia';
 
