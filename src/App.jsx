@@ -6,7 +6,6 @@ import {
   createTheme,
   ThemeProvider,
   StyledEngineProvider,
-  adaptV4Theme,
 } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -21,13 +20,11 @@ export default function App() {
 
   const theme = React.useMemo(
     () =>
-      createTheme(
-        adaptV4Theme({
-          palette: {
-            mode: prefersDarkMode ? 'dark' : 'light',
-          },
-        })
-      ),
+      createTheme({
+        palette: {
+          mode: prefersDarkMode ? 'dark' : 'light',
+        },
+      }),
     [prefersDarkMode]
   );
 

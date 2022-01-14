@@ -9,7 +9,7 @@ import createMatchMedia from './createMatchMedia';
 let calledUrls = null;
 beforeEach(() => {
   calledUrls = [];
-  jest.spyOn(global, 'fetch').mockImplementation((url) => {
+  jest.spyOn(window, 'fetch').mockImplementation((url) => {
     let response = { patterns: [], words: [] };
     if (url === '/api/search/happy') {
       response = { patterns: ['happy'], words };

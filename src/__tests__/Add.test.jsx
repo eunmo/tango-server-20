@@ -1,5 +1,5 @@
 import React from 'react';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { useLocation, MemoryRouter, Route, Routes } from 'react-router-dom';
 import { act, render, fireEvent, screen } from '@testing-library/react';
 
 import Add from '../Add';
@@ -9,22 +9,24 @@ let optionBody = null;
 let location = null;
 beforeEach(() => {
   optionBody = null;
-  jest.spyOn(global, 'fetch').mockImplementation((url, options) => {
+  jest.spyOn(window, 'fetch').mockImplementation((url, options) => {
     optionBody = options.body;
     return Promise.resolve({ ok: true });
   });
 });
 
-const renderLocation = ({ location: l }) => {
-  location = l;
+function RenderLocation() {
+  location = useLocation();
   return null;
-};
+}
 
 const renderAdd = async () => {
   return act(async () => {
     render(
       <MemoryRouter>
-        <Route path="*" render={renderLocation} />
+        <Routes>
+          <Route path="*" element={<RenderLocation />} />
+        </Routes>
         <Add />
       </MemoryRouter>
     );

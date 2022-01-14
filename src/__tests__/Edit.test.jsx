@@ -1,5 +1,5 @@
 import React from 'react';
-import { MemoryRouter, Route } from 'react-router-dom';
+import { useLocation, MemoryRouter, Route, Routes } from 'react-router-dom';
 import { act, render, fireEvent, screen } from '@testing-library/react';
 
 import Edit from '../Edit';
@@ -28,19 +28,19 @@ beforeEach(() => {
   });
 });
 
-const renderLocation = ({ location: l }) => {
-  location = l;
+function RenderLocation() {
+  location = useLocation();
   return null;
-};
+}
 
 const renderEdit = async (level, index) => {
   return act(async () => {
     render(
       <MemoryRouter initialEntries={[`/edit/${level}/${index}`]}>
-        <Route path="*" render={renderLocation} />
-        <Route path="/edit/:level/:index">
-          <Edit />
-        </Route>
+        <Routes>
+          <Route path="*" element={<RenderLocation />} />
+          <Route path="/edit/:level/:index" element={<Edit />} />
+        </Routes>
       </MemoryRouter>
     );
   });

@@ -10,7 +10,7 @@ let calledUrls = null;
 beforeEach(() => {
   calledUrls = [];
   window.matchMedia = createMatchMedia(900);
-  jest.spyOn(global, 'fetch').mockImplementation((url) => {
+  jest.spyOn(window, 'fetch').mockImplementation((url) => {
     const response = { patterns: [], words };
     calledUrls.push(url);
     return Promise.resolve({

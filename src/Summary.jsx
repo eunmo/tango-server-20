@@ -150,12 +150,20 @@ export default function Summary() {
         <Grid container>
           {months.map(({ month, streaks }) => (
             <Grid key={month} container item xs={12}>
-              <Grid item xs={1}>
-                {month.substring(0, 2)}
-              </Grid>
-              <Grid item xs={1}>
-                <b>{month.substring(2, 4)}</b>
-              </Grid>
+              {month === 'Old' ? (
+                <Grid item xs={2}>
+                  <b>{month}</b>
+                </Grid>
+              ) : (
+                <>
+                  <Grid item xs={1}>
+                    {month.substring(0, 2)}
+                  </Grid>
+                  <Grid item xs={1}>
+                    <b>{month.substring(2, 4)}</b>
+                  </Grid>
+                </>
+              )}
               <Streaks streaks={streaks} dataPrefix={`M-${month}`} />
             </Grid>
           ))}

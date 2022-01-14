@@ -12,7 +12,7 @@ const res1 = { langs, levels: [] };
 
 let mockResponse;
 beforeEach(() => {
-  jest.spyOn(global, 'fetch').mockImplementation(() => {
+  jest.spyOn(window, 'fetch').mockImplementation(() => {
     return Promise.resolve({
       ok: true,
       json: () => Promise.resolve(mockResponse),
@@ -113,7 +113,8 @@ test('renders short levels', async () => {
     ({ getByText, getByTestId } = render(<Summary />));
   });
 
-  expect(getByText('2008')).toBeInTheDocument();
+  expect(getByText('20')).toBeInTheDocument();
+  expect(getByText('08')).toBeInTheDocument();
   expect(getByTestId('M-2008-8').textContent).toBe('6');
   expect(getByTestId('M-2008-9').textContent).toBe('5');
 
@@ -263,6 +264,8 @@ test('renders short levels filter by today and lang', async () => {
 });
 
 const levelsLong = [
+  { level: 'E1913', summary: [[1, 1, 1]] },
+  { level: 'E1914', summary: [[1, 1, 1]] },
   { level: 'E2001', summary: [[1, 1, 1]] },
   { level: 'E2002', summary: [[1, 1, 1]] },
   { level: 'E2003', summary: [[1, 1, 1]] },
@@ -281,26 +284,29 @@ const res3 = { langs, levels: levelsLong };
 test('renders long levels', async () => {
   mockResponse = res3;
   let queryByText;
+  let queryAllByText;
   let getByTestId;
   await act(async () => {
-    ({ queryByText, getByTestId } = render(<Summary />));
+    ({ queryByText, queryAllByText, getByTestId } = render(<Summary />));
   });
 
-  expect(queryByText('2001')).toBe(null);
-  expect(queryByText('2002')).toBe(null);
-  expect(queryByText('2003')).toBe(null);
+  expect(queryByText('19')).toBe(null);
   expect(queryByText('Old')).toBeInTheDocument();
-  expect(queryByText('2004')).toBeInTheDocument();
-  expect(queryByText('2005')).toBeInTheDocument();
-  expect(queryByText('2006')).toBeInTheDocument();
-  expect(queryByText('2007')).toBeInTheDocument();
-  expect(queryByText('2008')).toBeInTheDocument();
-  expect(queryByText('2009')).toBeInTheDocument();
-  expect(queryByText('2010')).toBeInTheDocument();
-  expect(queryByText('2011')).toBeInTheDocument();
-  expect(queryByText('2012')).toBeInTheDocument();
+  expect(queryAllByText('20').length).toBe(12);
+  expect(queryByText('01')).toBeInTheDocument();
+  expect(queryByText('02')).toBeInTheDocument();
+  expect(queryByText('03')).toBeInTheDocument();
+  expect(queryByText('04')).toBeInTheDocument();
+  expect(queryByText('05')).toBeInTheDocument();
+  expect(queryByText('06')).toBeInTheDocument();
+  expect(queryByText('07')).toBeInTheDocument();
+  expect(queryByText('08')).toBeInTheDocument();
+  expect(queryByText('09')).toBeInTheDocument();
+  expect(queryAllByText('10').length).toBe(2);
+  expect(queryByText('11')).toBeInTheDocument();
+  expect(queryByText('12')).toBeInTheDocument();
 
-  expect(getByTestId('M-Old-9').textContent).toBe('3');
+  expect(getByTestId('M-Old-9').textContent).toBe('2');
 });
 
 test('refresh', async () => {
@@ -316,7 +322,8 @@ test('refresh', async () => {
 
   const { getByText, getByTestId } = screen;
 
-  expect(getByText('2008')).toBeInTheDocument();
+  expect(getByText('20')).toBeInTheDocument();
+  expect(getByText('08')).toBeInTheDocument();
   expect(getByTestId('M-2008-8').textContent).toBe('6');
   expect(getByTestId('M-2008-9').textContent).toBe('5');
 
