@@ -98,7 +98,7 @@ function SmUp({ words }) {
 
 export default function Words({ words }) {
   return (
-    <TableContainer component={Paper} variant="outlined">
+    <TableContainer component={Paper}>
       <Hidden smDown>
         <XsDown words={words} />
       </Hidden>

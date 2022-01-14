@@ -145,26 +145,28 @@ export default function Summary() {
       </Grid>
       <Paper
         variant="outlined"
-        sx={{ py: 1, pr: 1, position: 'relative', textAlign: 'right' }}
+        sx={{ p: 1, position: 'relative', textAlign: 'right' }}
       >
         <Grid container>
           {months.map(({ month, streaks }) => (
-            <Grid key={month} container item xs={12} spacing={1}>
-              <Grid item xs={2}>
+            <Grid key={month} container item xs={12}>
+              <Grid item xs={1}>
                 {month.substring(0, 2)}
+              </Grid>
+              <Grid item xs={1}>
                 <b>{month.substring(2, 4)}</b>
               </Grid>
               <Streaks streaks={streaks} dataPrefix={`M-${month}`} />
             </Grid>
           ))}
-          <Grid container item xs={12} spacing={1} sx={{ fontWeight: 'bold' }}>
-            <Grid item xs={2} sx={{ height: '28px' }}>
+          <Grid container item xs={12} sx={{ fontWeight: 'bold' }}>
+            <Grid item xs={2} sx={{ height: '24px' }}>
               <ShowChart />
             </Grid>
             <Streaks streaks={sums} dataPrefix="S" />
           </Grid>
           {days.map(({ day, streaks, sum }) => (
-            <Grid key={day} container item xs={12} spacing={1}>
+            <Grid key={day} container item xs={12}>
               <Grid item xs={2} data-testid={`D-${day}`}>
                 <b>{sum}</b>
               </Grid>
