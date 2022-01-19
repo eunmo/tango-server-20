@@ -1,4 +1,3 @@
-import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { act, render, fireEvent } from '@testing-library/react';
 
