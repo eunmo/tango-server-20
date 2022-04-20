@@ -56,6 +56,14 @@
           "parser": "flow"
         }
       ],
+      "react/jsx-filename-extension": [
+        1,
+        {
+          "extensions": [
+            ".js"
+          ]
+        }
+      ],
       "react/prop-types": 0,
       "react/react-in-jsx-scope": "off"
     },
